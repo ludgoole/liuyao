@@ -32,7 +32,7 @@ function onClickRight() {
 </script>
 
 <template>
-  <div absolute min-w-full min-h-full bg-base flex justify-center items-center select-none>
+  <div absolute min-w-full min-h-full flex justify-center items-center select-none>
     <div px-5 py-10 flex="~ col gap-4" justify-center items-center>
       <i text-8xl i-twemoji-crying-face></i>
       <span text-4xl>Page Not Found</span>

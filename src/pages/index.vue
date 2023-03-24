@@ -74,22 +74,25 @@ const changeYao = () => {
   }
 }
 
+const devicemotionFn = () => {
+  changeYao()
+  navigator.vibrate(1000)
+}
+
 // mounted
 onMounted(() => {
-  observer.value = new ShakeObserver(() => {
-    changeYao()
-    navigator.vibrate(1000)
-  })
+  observer.value = new ShakeObserver(devicemotionFn)
 })
 
 onUnmounted(() => {
-  try {
-    // 取消监听
-    observer.value.disconnect()
-  }
-  catch (e) {
-    console.log('🚀 ~ file: index.vue:85 ~ onUnmounted ~ e:', e)
-  }
+  window.removeEventListener('devicemotion', devicemotionFn)
+  // try {
+  //   // 取消监听
+  //   observer.value.disconnect()
+  // }
+  // catch (e) {
+  //   console.log('🚀 ~ file: index.vue:85 ~ onUnmounted ~ e:', e)
+  // }
 })
 </script>
 
