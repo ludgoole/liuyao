@@ -7,6 +7,9 @@ meta:
 <script setup lang="ts">
 import ShakeObserver from 'shake-observer'
 import BaseGua from '@/components/BaseGua.vue'
+import img_bei from '@/assets/image/bei.png'
+import img_zheng from '@/assets/image/zheng.png'
+import aud_coin from '@/assets/audio/coin.wav'
 
 // data
 const router = useRouter()
@@ -15,6 +18,7 @@ const observer = ref<any>()
 const isVibrating = ref(false)
 const jinqian = ref([2, 2, 2])
 const guaxiang = ref<number[]>([])
+// const img_bei = ref('src/assets/image/bei.png')
 
 // computed
 const statusText = computed(() => {
@@ -95,7 +99,7 @@ onUnmounted(() => {
       <li v-for="(qian, index) in jinqian" :key="index" w-20 h-20>
         <img
           :class="{ active: isVibrating }"
-          :src="qian === 3 ? '/src/assets/image/bei.png' : '/src/assets/image/zheng.png'"
+          :src="qian === 3 ? img_bei : img_zheng"
         />
       </li>
     </ul>
@@ -114,7 +118,7 @@ onUnmounted(() => {
         重新开始
       </VanButton>
     </div>
-    <audio ref="audio" src="/src/assets/audio/coin.wav"></audio>
+    <audio ref="audio" :src="aud_coin"></audio>
   </div>
 </template>
 
