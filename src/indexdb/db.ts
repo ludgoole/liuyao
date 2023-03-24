@@ -1,5 +1,5 @@
 import Dexie from 'dexie'
-const VERSION = 2
+const VERSION = 1
 
 export class LudgooleDatabase extends Dexie {
   zhouyi!: Dexie.Table<DATABASE.Zhouyi, number>
@@ -9,6 +9,7 @@ export class LudgooleDatabase extends Dexie {
 
     this.version(VERSION).stores({
       zhouyi: '&id, *yijing, *tiangan, *dizhi, *wuxing',
+      // book: '++id, *yijing, *tiangan, *dizhi, *wuxing',
     })
   }
 }

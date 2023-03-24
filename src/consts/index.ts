@@ -5,6 +5,11 @@ export const menus = [
     icon: 'home-o',
   },
   {
+    name: '排盘',
+    path: '/display',
+    icon: 'underway',
+  },
+  {
     name: '我的',
     path: '/mine',
     icon: 'user-circle-o',

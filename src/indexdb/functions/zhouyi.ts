@@ -14,6 +14,7 @@ db.transaction('rw', zhouyi, async () => {
   console.log('🚀 ~ file: zhouyi.ts:13 ~ db.transaction ~ smithzhouyi:', data)
 }).catch((e) => {
   console.log('🚀 ~ file: zhouyi.ts:17 ~ db.transaction ~ e:', e)
+  db.delete()
 })
 
 export const add = (data: DATABASE.Zhouyi) => zhouyi.put(data)

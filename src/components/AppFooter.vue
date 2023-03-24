@@ -1,12 +1,17 @@
 <script lang="ts" setup>
 import { menus } from '@/consts'
 const router = useRouter()
-const active = ref(0)
-const onChange = (index: number) => {
+const route = useRoute()
+const active = ref('/')
+const onChange = (path: string) => {
   router.push({
-    path: menus[index].path,
+    path,
   })
 }
+
+watch(() => route.path, (path) => {
+  active.value = path
+})
 </script>
 
 <template>
@@ -15,6 +20,7 @@ const onChange = (index: number) => {
       v-for="item in menus"
       :key="item.icon"
       :icon="item.icon"
+      :name="item.path"
     >
       {{ item.name }}
     </VanTabbarItem>

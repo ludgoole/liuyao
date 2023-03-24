@@ -2,14 +2,17 @@
 meta:
   title: 排盘
   leftArrow: true
+  rightText: 保存
 </route>
 
 <script lang="ts" setup>
 import moment from 'moment'
 import { Lunar } from 'lunar-javascript'
+import type { Emitter } from 'mitt'
 import { useZhouyiStore } from '@/stores/zhouyi'
 
 const { zhouyi } = useZhouyiStore()
+const emitter = inject('emitter') as Emitter<{ 'on-click-right': unknown }>
 const route = useRoute()
 const { query } = route
 const lunar = Lunar.fromDate(new Date())
@@ -70,8 +73,19 @@ const onChange = (val: string) => {
   三刑.value = dizhi[地支].三刑
 }
 
+const onClickRight = () => {
+  console.log('🚀 ~ file: display.vue:77 ~ onClickRight:')
+}
+
+// mounted
 onMounted(() => {
+  emitter.on('on-click-right', onClickRight)
   onChange(query.用神 as string)
+})
+
+// destroyed
+onUnmounted(() => {
+  emitter.off('on-click-right', onClickRight)
 })
 </script>
 
@@ -81,15 +95,6 @@ onMounted(() => {
       <p flex-center>
         <span whitespace-nowrap>占问：</span><VanField v-model="占问" class="!p-0" placeholder="请输入用户名" />
       </p>
-
-      <!--
-        <p>
-        占类：{{ 占类 }}
-        </p>
-        <p>
-        卦主：{{ 卦主 }}
-        </p>
-      -->
       <p>
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
       </p>
@@ -98,7 +103,7 @@ onMounted(() => {
         <span ml-4>(旬空：{{ 旬空 }})</span>
       </p>
       <p>
-        神煞：驿马-{{ 驿马 }}&nbsp;桃花-{{ 桃花 }}&nbsp;日禄-{{ 日禄 }}&nbsp;贵人-{{ 贵人 }}
+        神煞：驿马-{{ 驿马 }}&nbsp;&nbsp;桃花-{{ 桃花 }}&nbsp;&nbsp;日禄-{{ 日禄 }}&nbsp;&nbsp;贵人-{{ 贵人 }}
       </p>
     </header>
     <section px-4 mt-4>
