@@ -16,10 +16,10 @@ import getBuild from './vite.build'
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd())
-  const { VITE_APP_API_URL, VITE_APP_BASE_URL, VITE_APP_DIST } = env
+  const { VITE_APP_PROXY_URL, VITE_APP_DIST_URL, VITE_APP_DIST } = env
 
   return defineConfig({
-    base: VITE_APP_BASE_URL,
+    base: VITE_APP_DIST_URL,
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'), // 设置 `@` 指向 `src` 目录
@@ -47,7 +47,7 @@ export default ({ mode }: ConfigEnv) => {
     build: getBuild(VITE_APP_DIST),
     server: {
       proxy: {
-        '/1.1/classes': VITE_APP_API_URL,
+        '/1.1/classes': VITE_APP_PROXY_URL,
       },
     },
   })

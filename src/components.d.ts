@@ -13,7 +13,6 @@ declare module '@vue/runtime-core' {
     LiuyaoGua: typeof import('./components/LiuyaoGua.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Vanbook: typeof import('vant/es')['book']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
@@ -23,7 +22,6 @@ declare module '@vue/runtime-core' {
     VanForm: typeof import('vant/es')['Form']
     VanList: typeof import('vant/es')['List']
     VanNavBar: typeof import('vant/es')['NavBar']
-    VanPullRefresh: typeof import('vant/es')['PullRefresh']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
   }
