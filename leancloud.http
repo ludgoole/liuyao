@@ -1,5 +1,5 @@
 ### GET 查询
-GET  https://njr7h2zt.lc-cn-n1-shared.com/1.1/classes/test
+GET  https://njr7h2zt.lc-cn-n1-shared.com/1.1/classes/guali
 Content-Type:application/json;charset=UTF-8
 Accept:application/json;charset=UTF-8
 X-LC-Id: rXQh7iZY2plbuAmQupHDsgDq-gzGzoHsz
