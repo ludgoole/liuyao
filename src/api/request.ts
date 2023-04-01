@@ -50,7 +50,7 @@ axiosInstance.interceptors.response.use(
       Toast.clear()
 
     // 对响应数据做点什么
-    return response.data
+    return response
   },
   (error) => {
     // 关闭 loading
@@ -103,37 +103,41 @@ axiosInstance.interceptors.response.use(
 
 export default axiosInstance
 
-export function GET<T>(url: string, data: object, loading = true) {
-  return axiosInstance.request<unknown, T>({
+export function GET<T, U>(url: string, data: T, loading = true) {
+  return axiosInstance.request<U>({
     method: 'GET',
     url,
     data,
     loading,
   })
+    .then((res) => res.data)
 }
 
-export function POSt<T>(url: string, data: object, loading = true) {
-  return axiosInstance.request<unknown, T>({
+export function POSt<T, U>(url: string, data: T, loading = false) {
+  return axiosInstance.request<U>({
     method: 'POSt',
     url,
     data,
     loading,
   })
+    .then((res) => res.data)
 }
 
-export function PUT<T>(url: string, objectId: string, data: object, loading = true) {
-  return axiosInstance.request<unknown, T>({
+export function PUT<T, U>(url: string, objectId: string, data: T, loading = false) {
+  return axiosInstance.request<U>({
     method: 'PUT',
     url: `${url}/${objectId}`,
     data,
     loading,
   })
+    .then((res) => res.data)
 }
 
-export function DELETE<T>(url: string, objectId: string, loading = true) {
-  return axiosInstance.request<unknown, T>({
+export function DELETE<U>(url: string, objectId: string, loading = false) {
+  return axiosInstance.request<U>({
     method: 'DELETE',
     url: `${url}/${objectId}`,
     loading,
   })
+    .then((res) => res.data)
 }

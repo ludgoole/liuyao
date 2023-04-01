@@ -8,11 +8,12 @@ meta:
 <script lang="ts" setup>
 import moment from 'moment'
 import { Lunar } from 'lunar-javascript'
-import type { Emitter } from 'mitt'
+import { cn2en } from '@/utils'
+import { postGuali } from '@/api'
 import { useZhouyiStore } from '@/stores/zhouyi'
+import useMitt from '@/todos/use-mitt'
 
 const { zhouyi } = useZhouyiStore()
-const emitter = inject('emitter') as Emitter<{ 'on-click-right': unknown }>
 const route = useRoute()
 const { query } = route
 const lunar = Lunar.fromDate(new Date())
@@ -23,17 +24,17 @@ const activeName = ref('1')
 const 占问 = (query.占问 || '今日天气如何？') as string
 // const 占类 = query.占类 || '天气'
 // const 卦主 = query.卦主 || '自己'
-const 卦象 = query.卦象 || '678987'
+const 卦象 = (query.卦象 || '678987') as string
 
 // 装卦
 const 主卦 = (卦象 as string).split('').map(Number)
 // const 变卦 = 主卦.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
 const 月建 = query.月建 || lunar.getMonthZhi()
-const 日辰 = query.日辰 || lunar.getDayInGanZhi()
+const 日建 = query.日建 || lunar.getDayInGanZhi()
 const 旬空 = query.旬空 || lunar.getDayXunKong()
-const 月支: DATABASE.Dizhi_Key = 月建
-const 日支: DATABASE.Dizhi_Key = 日辰.slice(-1)
-const 日干: DATABASE.Tiangan_Key = 日辰.slice(0, 1)
+const 月支 = 月建 as DATABASE.Dizhi_Key
+const 日支 = 日建.slice(-1) as DATABASE.Dizhi_Key
+const 日干 = 日建.slice(0, 1) as DATABASE.Tiangan_Key
 const 驿马 = dizhi[日支].驿马
 const 桃花 = dizhi[日支].桃花
 const 日禄 = tiangan[日干].日禄
@@ -73,19 +74,24 @@ const onChange = (val: string) => {
   三刑.value = dizhi[地支].三刑
 }
 
-const onClickRight = () => {
-  console.log('🚀 ~ file: display.vue:77 ~ onClickRight:')
-}
-
-// mounted
-onMounted(() => {
-  emitter.on('on-click-right', onClickRight)
-  onChange(query.用神 as string)
-})
-
-// destroyed
-onUnmounted(() => {
-  emitter.off('on-click-right', onClickRight)
+// bus
+useMitt(() => {
+  postGuali(cn2en({
+    占问,
+    占类: '疾病',
+    卦主: '父母',
+    卦象,
+    月建,
+    日建,
+    旬空,
+    用神: 用神.value,
+    吉凶: 吉凶.value,
+    应期: 应期.value,
+    细节: 细节.value,
+    启示: 启示.value,
+  })).then((res) => {
+    console.log('🚀 ~ file: display.vue:98 ~ postGuali ~ res:', res)
+  })
 })
 </script>
 
@@ -99,7 +105,7 @@ onUnmounted(() => {
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
       </p>
       <p>
-        干支：{{ 月建 }}月 {{ 日辰 }}日
+        干支：{{ 月建 }}月 {{ 日建 }}日
         <span ml-4>(旬空：{{ 旬空 }})</span>
       </p>
       <p>
@@ -130,7 +136,7 @@ onUnmounted(() => {
             <p>三刑：{{ dizhi[月支].三刑 }}</p>
           </div>
           <div>
-            <p>日辰：{{ 日辰.slice(-1) }}</p>
+            <p>日建：{{ 日建.slice(-1) }}</p>
             <p>六冲：{{ dizhi[日支].六冲 }}</p>
             <p>六合：{{ dizhi[日支].六合 }}</p>
             <p>三刑：{{ dizhi[日支].三刑 }}</p>
@@ -154,10 +160,34 @@ onUnmounted(() => {
         </section>
       </VanCollapseItem>
       <VanCollapseItem title="批注" name="3" :border="false">
-        <VanField v-model="吉凶" label="吉凶:" label-width="32px" />
-        <VanField v-model="应期" label="应期:" />
-        <VanField v-model="细节" label="细节:" />
-        <VanField v-model="启示" label="启示:" />
+        <VanField
+          v-model="吉凶"
+          label="吉凶"
+          rows="1"
+          autosize
+          type="textarea"
+        />
+        <VanField
+          v-model="应期"
+          label="应期"
+          rows="1"
+          autosize
+          type="textarea"
+        />
+        <VanField
+          v-model="细节"
+          label="细节"
+          rows="1"
+          autosize
+          type="textarea"
+        />
+        <VanField
+          v-model="启示"
+          label="启示"
+          rows="1"
+          autosize
+          type="textarea"
+        />
       </VanCollapseItem>
     </VanCollapse>
   </div>
@@ -179,13 +209,15 @@ onUnmounted(() => {
     .van-field {
       padding: 0;
       &__label {
-        width: 32px;
+        width: 40px;
         margin: 0;
         font-weight: 400;
+        color: #262626;
       }
       &__control {
         font-weight: 400;
         color: gray;
+        font-size: 14px;
       }
     }
   }

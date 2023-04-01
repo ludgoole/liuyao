@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import zhouyiDb from '@/indexdb/functions/zhouyi'
+import { getLiuyao } from '/src/api'
 import { useZhouyiStore } from '@/stores/zhouyi'
 const { zhouyi } = toRefs(useZhouyiStore())
 const route = useRoute()
@@ -7,8 +7,8 @@ const isShowHeader = ref(true)
 const isShowFooter = ref(true)
 
 // create
-zhouyiDb.get().then((res) => {
-  zhouyi.value = res[0]
+getLiuyao().then((res) => {
+  zhouyi.value = res.results[0]
 })
 
 watch(() => route.meta, (meta) => {

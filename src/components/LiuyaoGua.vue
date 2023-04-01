@@ -13,11 +13,17 @@ const { yijing } = zhouyi as DATABASE.Zhouyi
 const 变卦_卦象 = computed(() => props.guaxiang.map((yao) => yao === 6 ? 9 : yao === 9 ? 6 : yao))
 const 变卦 = computed(() => yijing.find((v) => v.卦象.toString() === 变卦_卦象.toString()) || yijing[0])
 const 变卦_五行 = computed(() => 变卦.value.五行)
+const 静卦 = props.guaxiang.join() === 变卦_卦象.value.join()
 </script>
 
 <template>
   <div class="LiuyaoGua flex justify-between">
-    <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="20" />
-    <BaseGua :size="20" :guaxiang="变卦_卦象" :bagong-wuxing="变卦_五行" has-najia :has-dongyao="false" />
+    <template v-if="静卦">
+      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="32" />
+    </template>
+    <template v-else>
+      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="20" />
+      <BaseGua :size="20" :guaxiang="变卦_卦象" :bagong-wuxing="变卦_五行" has-najia :has-dongyao="false" />
+    </template>
   </div>
 </template>

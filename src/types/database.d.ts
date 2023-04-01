@@ -98,9 +98,27 @@ declare namespace DATABASE {
     '元神': string
     '忌神': string
   }
+  interface Guali {
+    '占问': string;
+    '占类': string;
+    '卦主': string;
+    '月建': string;
+    '日辰': string;
+    '旬空': string;
+    '卦象': string;
+    '用神': string;
+    '吉凶': string;
+    '应期': string;
+    '细节': string;
+    '启示': string;
+  }
+  interface Guali_EN {
+    [key: string]: string;
+  }
 
   type Tiangan_Key = keyof Tiangan
   type Dizhi_Key = keyof Dizhi
   type Wuxing_Key = keyof Wuxing
   type Yijing_Shiying_Key = keyof Yijing_Shiying
+  type Guali_Key = keyof Guali
 }

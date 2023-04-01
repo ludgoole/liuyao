@@ -7,7 +7,12 @@ export const menus = [
   {
     name: '排盘',
     path: '/display',
-    icon: 'underway',
+    icon: 'clock-o',
+  },
+  {
+    name: '卦例',
+    path: '/book',
+    icon: 'font-o',
   },
   {
     name: '我的',

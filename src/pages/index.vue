@@ -106,7 +106,15 @@ onUnmounted(() => {
         />
       </li>
     </ul>
-    <BaseGua :is-najia="true" :size="40" mt-4 :guaxiang="guaxiang" />
+    <Suspense>
+      <template #default>
+        <BaseGua :is-najia="true" :size="40" mt-4 :guaxiang="guaxiang" />
+      </template>
+
+      <template #fallback>
+        <div>loading...</div>
+      </template>
+    </Suspense>
     <p mt-4 border-dashed border-1 border-color-primary text-justify text-sm bg-base>
       请集中精力，默想所占之事；点击开始摇卦或者手机摇一摇，钱币开始旋转后，求得一爻，如此反复六次。
     </p>
