@@ -17,14 +17,15 @@ const { zhouyi } = useZhouyiStore()
 const route = useRoute()
 const { query } = route
 const lunar = Lunar.fromDate(new Date())
-const { tiangan, dizhi, wuxing } = zhouyi as DATABASE.Zhouyi
-const activeName = ref('1')
+const { tiangan, dizhi, wuxing, yijing } = zhouyi as DATABASE.Zhouyi
+const activeName = ref('日月')
 
 // 卜卦
 const 占问 = (query.占问 || '今日天气如何？') as string
 // const 占类 = query.占类 || '天气'
 // const 卦主 = query.卦主 || '自己'
 const 卦象 = (query.卦象 || '678987') as string
+const 卦 = yijing.find((v) => v.卦象.toString() === 卦象.split('').map((v) => Number(v) % 2).toString()) || yijing[0]
 
 // 装卦
 const 主卦 = (卦象 as string).split('').map(Number)
@@ -93,6 +94,9 @@ useMitt(() => {
     Toast('保存成功')
   })
 })
+
+// create
+onChange(用神.value)
 </script>
 
 <template>
@@ -121,7 +125,21 @@ useMitt(() => {
       />
     </section>
     <VanCollapse v-model="activeName" accordion :border="false" mt-4>
-      <VanCollapseItem title="日月" name="1" :border="false">
+      <VanCollapseItem title="卦象" name="卦象" :border="false">
+        <section text-size-sm>
+          <h3 color-gray-6>
+            {{ 卦.卦辞 }}
+          </h3>
+          <ul w-full>
+            <li v-for="item in 卦.爻辞" :key="item">
+              <p>
+                {{ item }}
+              </p>
+            </li>
+          </ul>
+        </section>
+      </VanCollapseItem>
+      <VanCollapseItem title="日月" name="日月" :border="false">
         <section flex-justify text-size-sm whitespace-nowrap>
           <div>
             <p>1.取用神</p>
@@ -143,7 +161,7 @@ useMitt(() => {
           </div>
         </section>
       </VanCollapseItem>
-      <VanCollapseItem title="用神" name="2" :border="false">
+      <VanCollapseItem title="用神" name="用神" :border="false">
         <section flex text-size-sm>
           <div flex-1>
             <p>用神：{{ 用神 }}</p>
@@ -159,7 +177,7 @@ useMitt(() => {
           </div>
         </section>
       </VanCollapseItem>
-      <VanCollapseItem title="批注" name="3" :border="false">
+      <VanCollapseItem title="批注" name="批注" :border="false">
         <VanField
           v-model="吉凶"
           label="吉凶"
@@ -169,6 +187,7 @@ useMitt(() => {
         />
         <VanField
           v-model="应期"
+          mt-2
           label="应期"
           rows="1"
           autosize
@@ -176,6 +195,7 @@ useMitt(() => {
         />
         <VanField
           v-model="细节"
+          mt-2
           label="细节"
           rows="1"
           autosize
@@ -183,6 +203,7 @@ useMitt(() => {
         />
         <VanField
           v-model="启示"
+          mt-2
           label="启示"
           rows="1"
           autosize
@@ -201,6 +222,9 @@ useMitt(() => {
   }
   .van-cell__title {
     font-weight: 900;
+  }
+  .van-cell::after {
+    border: none;
   }
   .van-collapse {
     &-item__content {
