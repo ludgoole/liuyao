@@ -8,8 +8,8 @@ meta:
 <script lang="ts" setup>
 import moment from 'moment'
 import { Lunar } from 'lunar-javascript'
-import { cn2en } from '@/utils'
-import { postGuali } from '@/api'
+import { Toast } from 'vant'
+import gualiDb from '@/indexdb/functions/guali'
 import { useZhouyiStore } from '@/stores/zhouyi'
 import useMitt from '@/todos/use-mitt'
 
@@ -76,7 +76,7 @@ const onChange = (val: string) => {
 
 // bus
 useMitt(() => {
-  postGuali(cn2en({
+  gualiDb.add({
     占问,
     占类: '疾病',
     卦主: '父母',
@@ -89,8 +89,8 @@ useMitt(() => {
     应期: 应期.value,
     细节: 细节.value,
     启示: 启示.value,
-  })).then((res) => {
-    console.log('🚀 ~ file: display.vue:98 ~ postGuali ~ res:', res)
+  }).then(() => {
+    Toast('保存成功')
   })
 })
 </script>
