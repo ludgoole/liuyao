@@ -18,7 +18,18 @@ const route = useRoute()
 const { query } = route
 const lunar = Lunar.fromDate(new Date())
 const { tiangan, dizhi, wuxing, yijing } = zhouyi as DATABASE.Zhouyi
-const activeName = ref('日月')
+const activeName = ref('')
+const 卦位中文 = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻']
+const 卦象中文 = {
+  '111': '天',
+  '110': '泽',
+  '101': '火',
+  '100': '雷',
+  '011': '风',
+  '010': '水',
+  '001': '山',
+  '000': '地',
+} as { [key: string]: string }
 
 // 卜卦
 const 占问 = (query.占问 || '今日天气如何？') as string
@@ -51,6 +62,12 @@ const 六合 = ref('')
 const 三合 = ref('')
 const 三刑 = ref('')
 
+// 细节
+const 卦位 = ref(0)
+const 六神 = ref('')
+const 上卦 = computed(() => 卦象.slice(3).split('').map((v) => Number(v) % 2).join(''))
+const 下卦 = computed(() => 卦象.slice(0, 3).split('').map((v) => Number(v) % 2).join(''))
+
 // 断卦
 const 用神 = ref(query.用神 as string || '')
 const 吉凶 = ref(query.吉凶 as string || '')
@@ -58,13 +75,13 @@ const 应期 = ref(query.应期 as string || '')
 const 细节 = ref(query.细节 as string || '')
 const 启示 = ref(query.启示 as string || '')
 
-const onChange = (val: string) => {
-  if (!val) return
+const onChange = (_纳甲: string) => {
+  if (!_纳甲) return
 
-  const 五行 = val.slice(-1) as DATABASE.Wuxing_Key
-  const 地支 = val.slice(-2, -1) as DATABASE.Dizhi_Key
+  const 五行 = _纳甲.slice(-1) as DATABASE.Wuxing_Key
+  const 地支 = _纳甲.slice(-2, -1) as DATABASE.Dizhi_Key
 
-  用神.value = val
+  用神.value = _纳甲
   元神.value = wuxing[五行].元神
   忌神.value = wuxing[五行].忌神
   墓库.value = wuxing[五行].生 + wuxing[五行].旺 + wuxing[五行].墓 + wuxing[五行].绝
@@ -73,6 +90,9 @@ const onChange = (val: string) => {
   六合.value = dizhi[地支].六合
   三合.value = dizhi[地支].三合
   三刑.value = dizhi[地支].三刑
+
+  卦位.value = 卦.纳甲.indexOf(_纳甲)
+  六神.value = tiangan[日干].六神[卦位.value]
 }
 
 // bus
@@ -139,41 +159,52 @@ onChange(用神.value)
           </ul>
         </section>
       </VanCollapseItem>
-      <VanCollapseItem title="日月" name="日月" :border="false">
-        <section flex-justify text-size-sm whitespace-nowrap>
-          <div>
-            <p>1.取用神</p>
-            <p>2.断吉凶</p>
-            <p>3.定应期</p>
-            <p>4.看细节</p>
-          </div>
+      <VanCollapseItem title="吉凶" name="吉凶" :border="false">
+        <section flex-justify text-size-sm whitespace-nowrap pr-3>
           <div>
             <p>月建：{{ 月建 }}</p>
             <p>六冲：{{ dizhi[月支].六冲 }}</p>
             <p>六合：{{ dizhi[月支].六合 }}</p>
             <p>三刑：{{ dizhi[月支].三刑 }}</p>
+            <p>三合：{{ dizhi[月支].三合 }}</p>
           </div>
           <div>
             <p>日建：{{ 日建.slice(-1) }}</p>
             <p>六冲：{{ dizhi[日支].六冲 }}</p>
             <p>六合：{{ dizhi[日支].六合 }}</p>
             <p>三刑：{{ dizhi[日支].三刑 }}</p>
+            <p>三合：{{ dizhi[日支].三合 }}</p>
+          </div>
+          <div>
+            <p>用神：{{ 用神 }}</p>
+            <p>六冲：{{ 六冲 }}</p>
+            <p>六合：{{ 六合 }}</p>
+            <p>三刑：{{ 三刑 }}</p>
+            <p>三合：{{ 三合 }}</p>
+            <!-- <p>墓库：{{ 墓库 }}</p> -->
           </div>
         </section>
       </VanCollapseItem>
-      <VanCollapseItem title="用神" name="用神" :border="false">
-        <section flex text-size-sm>
-          <div flex-1>
-            <p>用神：{{ 用神 }}</p>
-            <p>元神：{{ 元神 }}</p>
-            <p>忌神：{{ 忌神 }}</p>
-            <p>六冲：{{ 六冲 }}</p>
+      <VanCollapseItem title="细节" name="细节" :border="false">
+        <section flex-justify text-size-sm whitespace-nowrap pr-3>
+          <div>
+            <p>卦名：{{ 卦.卦名 }}</p>
+            <p>卦宫：{{ 卦.八宫.slice(0, 2) }}</p>
+            <p>卦象：{{ 卦象中文[上卦] + 卦象中文[下卦] }}</p>
+            <p>卦位：{{ 卦位中文[卦位] }}</p>
           </div>
-          <div flex-1>
-            <p>三合：{{ 三合 }}</p>
-            <p>三刑：{{ 三刑 }}</p>
-            <p>墓库：{{ 墓库 }}</p>
-            <p>六合：{{ 六合 }}</p>
+          <div>
+            <p>阴阳：{{ 主卦[卦位] % 2 === 0 ? '阴爻' : '阳爻' }}</p>
+            <p>动静：{{ 主卦[卦位] % 3 === 0 ? '动爻' : '静爻' }}</p>
+            <!-- <p>飞伏：{{ }}</p> -->
+            <p>空亡：{{ 旬空 }}</p>
+            <p>墓库：{{ 墓库[2] }}</p>
+          </div>
+          <div>
+            <p>地支：{{ 用神[2] }}</p>
+            <p>五行：{{ 用神[3] }}</p>
+            <p>六亲：{{ 用神.slice(0, 2) }}</p>
+            <p>六神：{{ 六神 }}</p>
           </div>
         </section>
       </VanCollapseItem>
@@ -246,4 +277,4 @@ onChange(用神.value)
     }
   }
 }
-</style>>
+</style>

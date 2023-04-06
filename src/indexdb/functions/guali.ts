@@ -1,5 +1,5 @@
 import db from '../db'
-import bookData from '../database/book.json'
+import bookData from '../database/book.js'
 const guali = db.guali
 console.log('🚀 ~ file: guali.ts:4 ~ guali:', guali)
 

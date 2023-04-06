@@ -35,6 +35,7 @@ const { yijing, tiangan, wuxing } = zhouyi as DATABASE.Zhouyi
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
 const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.value.toString()) || yijing[0])
+console.log('🚀 ~ file: BaseGua.vue:37 ~ 卦象:', 卦象.value, 卦.value)
 const 纳甲 = computed(() => 卦.value?.纳甲)
 const 世应 = computed(() => 卦.value?.世应) as ComputedRef<{ [key: string | number]: string }>
 const 六神 = computed(() => tiangan[props.gan].六神)
