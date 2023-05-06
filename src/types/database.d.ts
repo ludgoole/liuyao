@@ -99,6 +99,7 @@ declare namespace DATABASE {
     '忌神': string
   }
   interface Guali {
+    'id': string;
     '占问': string;
     '占类': string;
     '卦主': string;

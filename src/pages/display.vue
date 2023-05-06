@@ -32,9 +32,10 @@ const 卦象中文 = {
 } as { [key: string]: string }
 
 // 卜卦
-const 占问 = (query.占问 || '今日天气如何？') as string
-// const 占类 = query.占类 || '天气'
-// const 卦主 = query.卦主 || '自己'
+const id = (query.id || Date.now().toString()) as string
+const 占问 = ref((query.占问 || '今日天气如何？') as string)
+const 占类 = (query.占类 || '天气') as string
+const 卦主 = (query.卦主 || '自己') as string
 const 卦象 = (query.卦象 || '678987') as string
 const 卦 = yijing.find((v) => v.卦象.toString() === 卦象.split('').map((v) => Number(v) % 2).toString()) || yijing[0]
 
@@ -75,6 +76,7 @@ const 应期 = ref(query.应期 as string || '')
 const 细节 = ref(query.细节 as string || '')
 const 启示 = ref(query.启示 as string || '')
 
+// method
 const onChange = (_纳甲: string) => {
   if (!_纳甲) return
 
@@ -95,12 +97,12 @@ const onChange = (_纳甲: string) => {
   六神.value = tiangan[日干].六神[卦位.value]
 }
 
-// bus
-useMitt(() => {
+const onSave = () => {
   gualiDb.add({
-    占问,
-    占类: '疾病',
-    卦主: '父母',
+    id,
+    占问: 占问.value,
+    占类,
+    卦主,
     卦象,
     月建,
     日建,
@@ -113,7 +115,10 @@ useMitt(() => {
   }).then(() => {
     Toast('保存成功')
   })
-})
+}
+
+// bus
+useMitt(onSave)
 
 // create
 onChange(用神.value)
@@ -123,7 +128,7 @@ onChange(用神.value)
   <div class="Display" py-4 text-left>
     <header px-4>
       <p flex-center>
-        <span whitespace-nowrap>占问：</span><VanField v-model="占问" class="!p-0" placeholder="请输入用户名" />
+        <span whitespace-nowrap @click="onSave">占问：</span><VanField v-model="占问" class="!p-0" placeholder="请输入用户名" />
       </p>
       <p>
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}

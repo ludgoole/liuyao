@@ -22,8 +22,8 @@ const 静卦 = props.guaxiang.join() === 变卦_卦象.value.join()
       <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="32" />
     </template>
     <template v-else>
-      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="20" />
-      <BaseGua :size="20" :guaxiang="变卦_卦象" :bagong-wuxing="变卦_五行" has-najia :has-dongyao="false" />
+      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-najia :size="24" />
+      <BaseGua :size="24" :guaxiang="变卦_卦象" :bagong-wuxing="变卦_五行" has-najia :has-dongyao="false" />
     </template>
   </div>
 </template>

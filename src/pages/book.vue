@@ -36,7 +36,7 @@ const book = ref<DATABASE.Guali[]>([])
 const typeName = ref<DATABASE.Guali_Key>('占问')
 const search = ref('')
 
-//
+// computed
 const getZhigua = (卦象: string) => {
   const 主卦象 = 卦象.split('').map((v) => Number(v))
   const 变卦象 = 主卦象.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
@@ -50,19 +50,21 @@ const getZhigua = (卦象: string) => {
 
 // method
 const onLoad = () => {
+  console.log('🚀 ~ file: book.vue:53 ~ onLoad ~ onLoad:')
   gualiDb.get().then((res) => {
     book.value = res
   })
 }
 
 const queryGua = () => {
+  console.log('🚀 ~ file: book.vue:59 ~ queryGua ~ queryGua:', typeName.value, search.value)
   gualiDb.query(typeName.value, search.value).then((data) => {
     book.value = data
   })
 }
 
 const starGua = (卦: DATABASE.Guali, i: number) => {
-  // 不加i，数据永远是滴一条，即book[0]
+  // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
   const { 收藏 } = 卦
@@ -72,17 +74,17 @@ const starGua = (卦: DATABASE.Guali, i: number) => {
   })
 }
 const delGua = (卦: DATABASE.Guali, i: number) => {
-  // 不加i，数据永远是滴一条，即book[0]
+  // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
-  gualiDb.remove(卦.占问).then(() => {
+  gualiDb.remove(卦.id).then(() => {
     Toast('删除成功')
     onLoad()
   })
 }
 
 const toGua = (卦: DATABASE.Guali, i: number) => {
-  // 不加i，数据永远是滴一条，即book[0]
+  // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
   router.push({
@@ -104,7 +106,7 @@ onLoad()
 
 <template>
   <div class="Book">
-    <VanSticky :offset-top="46">
+    <VanSticky :offset-top="0">
       <div bg-white py-2 px-4 flex-center justify="around">
         <VanTag
           v-for="type in types" :key="type"
@@ -116,7 +118,7 @@ onLoad()
         </VanTag>
       </div>
 
-      <VanField v-model="search" label="" placeholder="请输入" right-icon="search" @change="queryGua" />
+      <VanField v-model="search" label="" placeholder="请输入" right-icon="search" @click-right-icon="queryGua" />
     </VanSticky>
 
     <ul mt-4>

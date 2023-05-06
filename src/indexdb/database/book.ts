@@ -1,5 +1,5 @@
 // 增删卜易
-export default [
+const book = [
   {
     占问: '001占父近病',
     占类: '疾病',
@@ -499,3 +499,10 @@ export default [
     启示: '父母持世，妙药难医',
   },
 ]
+
+export default book.map((item, i) => {
+  return {
+    id: (`00${i}`).slice(-3),
+    ...item,
+  }
+})

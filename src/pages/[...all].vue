@@ -3,6 +3,7 @@ meta:
   title: Page Not Found
   leftArrow: true
   rightText: 刷新
+  hideFooter: true
 </route>
 
 <script setup lang="ts">
