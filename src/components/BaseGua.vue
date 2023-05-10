@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<{
   hasLiushen: false,
   hasNajia: false,
   hasDongyao: true,
-  bagongWuxing: '金',
+  // bagongWuxing: '金',
   guaxiang: () => [6, 7, 8, 9, 8, 7],
 })
 
