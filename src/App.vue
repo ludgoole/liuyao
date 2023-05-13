@@ -26,7 +26,12 @@ watch(() => route.meta, (meta) => {
 <template>
   <div flex="~ col" justify-between w-100vw h-100vh>
     <AppHeader v-show="isShowHeader" />
-    <RouterView flex-1 overflow-y-auto text-center />
+
+    <KeepAlive v-if="route.meta.keepAlive">
+      <RouterView flex-1 overflow-y-auto text-center />
+    </KeepAlive>
+    <RouterView v-else flex-1 overflow-y-auto text-center />
+
     <AppFooter v-if="isShowFooter" />
   </div>
 </template>

@@ -1,10 +1,12 @@
 declare namespace DATABASE {
   interface Zhouyi {
     id: string
+    bagua: {[key: string]: string}
     yijing: Yijing[]
     tiangan: Tiangan
     dizhi: Dizhi
     wuxing: Wuxing
+    yinyuan: Yinyuan
   }
 
   interface Yijing {
@@ -48,8 +50,10 @@ declare namespace DATABASE {
 
   interface Tiangan_Item {
     '六神': string[]
-    '日禄': string
+    '禄神': string
     '贵人': string
+    '羊刃':string
+    '文昌': string
   }
 
   interface Dizhi {
@@ -75,6 +79,11 @@ declare namespace DATABASE {
     '三刑': string
     '驿马': string
     '桃花': string
+    '将星': string
+    '劫煞': string
+    '华盖': string
+    '谋星': string
+    '灾煞': string
   }
 
   interface Wuxing {
@@ -113,6 +122,29 @@ declare namespace DATABASE {
     '细节': string;
     '启示': string;
     '收藏'?: string;
+  }
+
+  interface Yinyuan {
+    '金': Yinyuan_Item;
+    '木': Yinyuan_Item;
+    '水': Yinyuan_Item;
+    '火': Yinyuan_Item;
+    '土': Yinyuan_Item;
+  }
+
+  interface Yinyuan_Item {
+    '子': string;
+    '丑': string;
+    '寅': string;
+    '卯': string;
+    '辰': string;
+    '巳': string;
+    '午': string;
+    '未': string;
+    '申': string;
+    '酉': string;
+    '戌': string;
+    '亥': string;
   }
   interface Guali_EN {
     [key: string]: string;
