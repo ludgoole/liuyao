@@ -18,7 +18,6 @@ const observer = ref<any>()
 const isVibrating = ref(false)
 const jinqian = ref([2, 2, 2])
 const guaxiang = ref<number[]>([])
-// const img_bei = ref('src/assets/image/bei.png')
 
 // computed
 const statusText = computed(() => {
@@ -75,8 +74,10 @@ const changeYao = () => {
 }
 
 const devicemotionFn = () => {
-  changeYao()
-  navigator.vibrate(1000)
+  if (guaxiang.value.length <= 6) {
+    changeYao()
+    navigator.vibrate(1000)
+  }
 }
 
 // mounted
@@ -86,13 +87,13 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('devicemotion', devicemotionFn)
-  // try {
-  //   // 取消监听
-  //   observer.value.disconnect()
-  // }
-  // catch (e) {
-  //   console.log('🚀 ~ file: index.vue:85 ~ onUnmounted ~ e:', e)
-  // }
+  try {
+    // 取消监听
+    observer.value.disconnect()
+  }
+  catch (e) {
+    console.log('🚀 ~ file: index.vue:85 ~ onUnmounted ~ e:', e)
+  }
 })
 </script>
 
