@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
   // 20    | 40     | 60
   size?: number
   gan?: DATABASE.Tiangan_Key
+  zhi?: DATABASE.Dizhi_Key
   yongshen?: string
   hasLiushen?: boolean
   hasNajia?: boolean
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   size: 40,
   gan: '甲',
+  zhi: '子',
   yongshen: '',
   hasLiushen: false,
   hasNajia: false,
@@ -30,12 +32,11 @@ const emit = defineEmits(['on-change'])
 
 // data
 const { zhouyi } = useZhouyiStore()
-const { yijing, tiangan, wuxing } = zhouyi as DATABASE.Zhouyi
+const { yijing, tiangan, dizhi, wuxing } = zhouyi as DATABASE.Zhouyi
 
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
 const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.value.toString()) || yijing[0])
-console.log('🚀 ~ file: BaseGua.vue:37 ~ 卦象:', 卦象.value, 卦.value)
 const 纳甲 = computed(() => 卦.value?.纳甲)
 const 世应 = computed(() => 卦.value?.世应) as ComputedRef<{ [key: string | number]: string }>
 const 六神 = computed(() => tiangan[props.gan].六神)
@@ -69,6 +70,7 @@ const fontSize = computed(() => props.size <= 24 ? `${props.size / 2}px` : '14px
             'font-bold': 用神 && 纳甲[index]?.includes(用神),
             'color-rose': wuxing[用神]?.元神 === 纳甲[index].slice(-1),
             'color-green': wuxing[用神]?.忌神 === 纳甲[index].slice(-1),
+            'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
           }"
         >
           <p v-if="hasLiushen" class="mr-2">
@@ -110,6 +112,8 @@ const fontSize = computed(() => props.size <= 24 ? `${props.size / 2}px` : '14px
 .BaseGua {
   font-size: v-bind(fontSize);
   &-yao {
+    max-width: 150px;
+    max-height: 24px;
     width:  v-bind(width);
     height: v-bind(height);
 

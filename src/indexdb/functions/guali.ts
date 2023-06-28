@@ -8,7 +8,7 @@ db.transaction('rw', guali, async () => {
   const data = await guali.toArray()
 
   // Make sure we have something in DB:
-  data.length === 0 && guali.bulkPut(bookData)
+  guali.bulkPut(bookData)
 
   // Show result:
   console.log('🚀 ~ file: guali.ts:11 ~ db.transaction ~ data:', data)
