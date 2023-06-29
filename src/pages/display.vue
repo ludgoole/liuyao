@@ -40,14 +40,14 @@ const 地支神煞 = ['驿马', '桃花', '将星', '劫煞', '华盖', '谋星'
 
 // 卜卦
 const id = (query.id || Date.now().toString()) as string
+const 卦象 = ref((query.卦象 || '678987') as string)
 const 占问 = ref((query.占问 || '今日天气如何？') as string)
 const 占类 = (query.占类 || '天气') as string
 const 卦主 = (query.卦主 || '自己') as string
-const 卦象 = (query.卦象 || '678987') as string
-const 卦 = yijing.find((v) => v.卦象.toString() === 卦象.split('').map((v) => Number(v) % 2).toString()) || yijing[0]
+const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.value.split('').map((v) => Number(v) % 2).toString()) || yijing[0])
 
 // 装卦
-const 主卦 = (卦象 as string).split('').map(Number)
+const 主卦 = ref(卦象.value.split('').map(Number))
 // const 变卦 = 主卦.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
 const 月建 = query.月建 || lunar.getMonthZhi()
 const 日建 = query.日建 || lunar.getDayInGanZhi()
@@ -82,8 +82,8 @@ const 卦位 = ref(0)
 const 六神 = ref('')
 const 因缘 = ref('')
 const 神煞 = ref('')
-const 上卦 = computed(() => 卦象.slice(3).split('').map((v) => Number(v) % 2).join(''))
-const 下卦 = computed(() => 卦象.slice(0, 3).split('').map((v) => Number(v) % 2).join(''))
+const 上卦 = computed(() => 卦象.value.slice(3).split('').map((v) => Number(v) % 2).join(''))
+const 下卦 = computed(() => 卦象.value.slice(0, 3).split('').map((v) => Number(v) % 2).join(''))
 const 八卦 = computed(() => 卦位.value < 3 ? bagua[下卦.value] : bagua[上卦.value])
 
 // method
@@ -105,7 +105,7 @@ const onChange = (_纳甲: string) => {
   三合.value = dizhi[地支].三合
   三刑.value = dizhi[地支].三刑
 
-  卦位.value = 卦.纳甲.indexOf(_纳甲)
+  卦位.value = 卦.value.纳甲.indexOf(_纳甲)
   六神.value = tiangan[日干].六神[卦位.value]
   神煞.value = [神煞_天干, 神煞_地支].filter(Boolean).join('、') || '--'
   因缘.value = yinyuan[五行][日支]
@@ -117,7 +117,7 @@ const onSave = () => {
     占问: 占问.value,
     占类,
     卦主,
-    卦象,
+    卦象: 卦象.value,
     月建,
     日建,
     旬空,
@@ -138,6 +138,10 @@ const toDeatil = (query: any) => {
   })
 }
 
+const toDisplay = () => {
+  主卦.value = 卦象.value.split('').map(Number)
+}
+
 // bus
 useMitt(onSave)
 
@@ -148,6 +152,9 @@ onChange(用神.value)
 <template>
   <div class="Display" py-4 text-left>
     <header px-4>
+      <p flex-center>
+        <span whitespace-nowrap>摇卦：</span><VanField v-model="卦象" class="!p-0" placeholder="请输入卦象" @change="toDisplay" />
+      </p>
       <p flex-center>
         <span whitespace-nowrap @click="onSave">占问：</span><VanField v-model="占问" class="!p-0" placeholder="请输入用户名" />
       </p>
@@ -291,7 +298,7 @@ onChange(用神.value)
 .Display {
   .van-field__body {
     font-size: 16px;
-    font-weight: 900;
+    // font-weight: 900;
   }
   .van-cell__title {
     font-weight: 900;
