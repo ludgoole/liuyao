@@ -171,7 +171,7 @@ onChange(用神.value)
     </header>
     <section px-4 mt-4>
       <LiuyaoGua
-        :size="21"
+        :size="18"
         :gan="日干"
         :zhi="日支"
         :yongshen="用神"

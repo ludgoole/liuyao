@@ -32,7 +32,7 @@ const emit = defineEmits(['on-change'])
 
 // data
 const { zhouyi } = useZhouyiStore()
-const { yijing, tiangan, dizhi, wuxing } = zhouyi as DATABASE.Zhouyi
+const { yijing, tiangan, dizhi, wuxing, yinyuan } = zhouyi as DATABASE.Zhouyi
 
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
@@ -40,7 +40,9 @@ const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.val
 const 纳甲 = computed(() => 卦.value?.纳甲)
 const 世应 = computed(() => 卦.value?.世应) as ComputedRef<{ [key: string | number]: string }>
 const 六神 = computed(() => tiangan[props.gan].六神)
-const 用神 = computed(() => props.yongshen.slice(-1)) as ComputedRef<DATABASE.Wuxing_Key>
+const 用神 = computed(() => props.yongshen || 纳甲.value[5])
+const 用神_五行 = computed(() => 用神.value.slice(-1)) as ComputedRef<DATABASE.Wuxing_Key>
+// const 用神_地支 = computed(() => 用神.value.slice(-2, -1)) as ComputedRef<DATABASE.Dizhi_Key>
 const 八宫五行 = computed(() => props.bagongWuxing || 卦.value.五行) as ComputedRef<DATABASE.Wuxing_Key>
 
 // method
@@ -48,6 +50,7 @@ const getLiuqin = (wuxing: DATABASE.Wuxing, wuxingStr: string) => {
   const wuxingKey = wuxingStr as DATABASE.Wuxing_Key
   return wuxing[八宫五行.value][wuxingKey]
 }
+const getYinyuan = (五行: DATABASE.Wuxing_Key, 地支: string) => yinyuan[五行][地支]
 
 // style
 const width = computed(() => `${props.size}vw`)
@@ -67,9 +70,9 @@ const fontSize = computed(() => props.size <= 24 ? `${props.size / 2}px` : '14px
         <div
           flex
           :class="{
-            'font-bold': 用神 && 纳甲[index]?.includes(用神),
-            'color-rose': wuxing[用神]?.元神 === 纳甲[index].slice(-1),
-            'color-green': wuxing[用神]?.忌神 === 纳甲[index].slice(-1),
+            'font-bold': 用神_五行 && 纳甲[index]?.includes(用神_五行),
+            'color-rose': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
+            'color-green': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
             'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
           }"
         >
@@ -77,6 +80,9 @@ const fontSize = computed(() => props.size <= 24 ? `${props.size / 2}px` : '14px
             {{ 六神[index] }}
           </p>
           <p>{{ getLiuqin(wuxing, 纳甲[index].slice(-1)) }}{{ 纳甲[index].slice(-2) }}</p>
+          <p class="mr-2">
+            {{ getYinyuan(用神_五行, 纳甲[index].slice(-2, -1)).slice(-1) }}
+          </p>
         </div>
       </div>
       <div class="BaseGua-center">

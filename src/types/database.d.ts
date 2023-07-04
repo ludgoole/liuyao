@@ -145,6 +145,7 @@ declare namespace DATABASE {
     '酉': string;
     '戌': string;
     '亥': string;
+    [key: string]: string
   }
   interface Guali_EN {
     [key: string]: string;
