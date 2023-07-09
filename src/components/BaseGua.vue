@@ -106,7 +106,7 @@ onMounted(() => {
             <p color-gray-4>
               {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}
             </p>
-            <p color-gray-4 mr-4>
+            <p color-gray-4 mr-2>
               {{ 卦宫_纳甲[index].slice(-2, -1) }}
             </p>
           </template>
@@ -133,7 +133,7 @@ onMounted(() => {
           </p>
         </div>
         <div flex>
-          <p w-8 text-xl color-gray-6>
+          <p w-2em text-xl color-gray-6>
             <span
               v-if="hasDongyao" inline-block :class="{
                 'color-black': yao % 3 === 0,
@@ -147,10 +147,10 @@ onMounted(() => {
               {{ yao % 2 === 0 ? '、' : '、、' }}
             </span>
           </p>
-          <p v-if="hasShiying" translate-y-4px>
+          <p v-if="hasShiying" w-1em translate-y-8px mr-2>
             {{ 世应[`${index + 1}`] === '世' ? 卦?.八宫.slice(0, 1) : 世应[`${index + 1}`] }}
           </p>
-          <p v-if="!hasDongyao" ml-2 translate-y-4px>
+          <p v-if="hasLiushen" translate-y-8px>
             {{ 六神[index] }}
           </p>
         </div>

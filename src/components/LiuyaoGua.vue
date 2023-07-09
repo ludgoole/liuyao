@@ -25,8 +25,8 @@ console.log('🚀 ~ file: LiuyaoGua.vue:18 ~ props.guaxiang:', props.guaxiang)
       <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-shiying :size="32" />
     </template>
     <template v-else>
-      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-liushen has-shiying />
-      <BaseGua v-bind="$attrs" :guaxiang="变卦_卦象" :bagong-wuxing="本卦_五行" :has-dongyao="false" />
+      <BaseGua v-bind="$attrs" :guaxiang="guaxiang" has-shiying />
+      <BaseGua v-bind="$attrs" :guaxiang="变卦_卦象" :bagong-wuxing="本卦_五行" :has-dongyao="false" has-liushen />
     </template>
   </div>
 </template>
