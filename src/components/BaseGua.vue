@@ -106,7 +106,7 @@ onMounted(() => {
             <p color-gray-4>
               {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}
             </p>
-            <p color-gray-4 mr-2>
+            <p color-gray-4 mr-4>
               {{ 卦宫_纳甲[index].slice(-2, -1) }}
             </p>
           </template>
