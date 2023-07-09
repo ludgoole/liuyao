@@ -109,7 +109,7 @@ onUnmounted(() => {
     </ul>
     <Suspense>
       <template #default>
-        <BaseGua :is-najia="true" :size="40" mt-4 :guaxiang="guaxiang" />
+        <BaseGua :is-najia="true" :size="40" mt-4 :guaxiang="guaxiang" has-center flex-center :has-najia="false" />
       </template>
 
       <template #fallback>

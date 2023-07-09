@@ -49,8 +49,10 @@ const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.val
 // 装卦
 const 主卦 = ref(卦象.value.split('').map(Number))
 // const 变卦 = 主卦.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
+const 年建 = query.月建 || lunar.getYearZhi()
 const 月建 = query.月建 || lunar.getMonthZhi()
 const 日建 = query.日建 || lunar.getDayInGanZhi()
+const 时建 = query.日建 || lunar.getTimeInGanZhi()
 const 旬空 = query.旬空 || lunar.getDayXunKong()
 const 月支 = 月建 as DATABASE.Dizhi_Key
 const 日支 = 日建.slice(-1) as DATABASE.Dizhi_Key
@@ -146,7 +148,7 @@ const toDisplay = () => {
 useMitt(onSave)
 
 // create
-onChange(用神.value)
+// onChange(用神.value)
 </script>
 
 <template>
@@ -162,7 +164,7 @@ onChange(用神.value)
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
       </p>
       <p>
-        干支：{{ 月建 }}月 {{ 日建 }}日
+        干支：{{ 年建 }}年 {{ 月建 }}月 {{ 日建 }}日 {{ 时建 }}日
         <span ml-4>(旬空：{{ 旬空 }})</span>
       </p>
       <p>
@@ -171,7 +173,7 @@ onChange(用神.value)
     </header>
     <section px-4 mt-4>
       <LiuyaoGua
-        :size="18"
+        :size="24"
         :gan="日干"
         :zhi="日支"
         :yongshen="用神"
