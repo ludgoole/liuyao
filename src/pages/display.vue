@@ -163,7 +163,7 @@ useMitt(onSave)
       <p>
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
       </p>
-      <p>
+      <p @click="router.push('/thoery')">
         干支：{{ 年建 }}年 {{ 月建 }}月 {{ 日建 }}日 {{ 时建 }}时
         <span ml-2>({{ 旬空 }})</span>
       </p>
