@@ -1,4 +1,4 @@
-import{d as C}from"./index.18af5d62.js";import{o as D,m as t,J as o}from"./vendor.09165d10.js";const a=[{\u5360\u95EE:"001\u5360\u7236\u8FD1\u75C5",\u5360\u7C7B:"\u75BE\u75C5",\u5366\u4E3B:"\u7236\u6BCD",\u5366\u8C61:"777977",\u6708\u5EFA:"\u8FB0",\u65E5\u5EFA:"\u620A\u7533",\u65EC\u7A7A:"\u5BC5\u536F",\u7528\u795E:"\u7236\u6BCD\u8FB0\u571F",\u5409\u51F6:`
+import{d as C}from"./index.b407e2e5.js";import{o as D,m as t,J as o}from"./vendor.63d3c1a4.js";const a=[{\u5360\u95EE:"001\u5360\u7236\u8FD1\u75C5",\u5360\u7C7B:"\u75BE\u75C5",\u5366\u4E3B:"\u7236\u6BCD",\u5366\u8C61:"777977",\u6708\u5EFA:"\u8FB0",\u65E5\u5EFA:"\u620A\u7533",\u65EC\u7A7A:"\u5BC5\u536F",\u7528\u795E:"\u7236\u6BCD\u8FB0\u571F",\u5409\u51F6:`
     1.\u5FCC\u795E\u751F\u5143\u795E\uFF0C\u5143\u795E\u751F\u7528\u795E\uFF0C\u5409
     2.\u7528\u795E\u4E34\u6708\u5EFA\uFF0C\u5409
     3.\u8FD1\u75C5\u9022\u516D\u51B2\uFF0C\u5409
@@ -118,6 +118,9 @@ import{d as C}from"./index.18af5d62.js";import{o as D,m as t,J as o}from"./vendo
     1.\u7528\u795E\u5B50\u5B59\u4EA5\u6C34\uFF0C\u6708\u7834\uFF0C\u65E5\u751F\uFF0C\u51F6
     2.\u4E16\u723B\u7236\u6BCD\u4E11\u571F\uFF0C\u6708\u751F\uFF0C\u4E16\u514B\u7528\u795E\uFF0C\u51F6
     `,\u5E94\u671F:"",\u7EC6\u8282:"...",\u542F\u793A:"\u7236\u6BCD\u6301\u4E16\uFF0C\u5999\u836F\u96BE\u533B"},{\u5360\u95EE:"028\u5360\u81EA\u75C5",\u5360\u7C7B:"\u75BE\u75C5",\u5366\u4E3B:"\u4E16\u723B",\u5366\u8C61:"877777",\u6708\u5EFA:"\u5DF3",\u65E5\u5EFA:"\u4E19\u7533",\u65EC\u7A7A:"\u8FB0\u5DF3",\u7528\u795E:"\u5B50\u5B59\u4EA5\u6C34",\u5409\u51F6:`
+    1.\u7528\u795E\u5B50\u5B59\u4EA5\u6C34\uFF0C\u6708\u7834\uFF0C\u65E5\u751F\uFF0C\u51F6
+    2.\u4E16\u723B\u7236\u6BCD\u4E11\u571F\uFF0C\u6708\u751F\uFF0C\u4E16\u514B\u7528\u795E\uFF0C\u51F6
+    `,\u5E94\u671F:"",\u7EC6\u8282:"...",\u542F\u793A:"\u7236\u6BCD\u6301\u4E16\uFF0C\u5999\u836F\u96BE\u533B"},{\u5360\u95EE:"001\u96C6\u56E2\u53D1\u5C55",\u5360\u7C7B:"\u8D22\u8FD0",\u5366\u4E3B:"\u7236\u6BCD",\u5366\u8C61:"788987",\u5E74\u5EFA:"\u8F9B\u5DF3",\u6708\u5EFA:"\u5E9A\u5B50",\u65E5\u5EFA:"\u7678\u4E11",\u65F6\u5EFA:"\u7533",\u65EC\u7A7A:"\u5BC5\u536F",\u7528\u795E:"\u7236\u6BCD\u5B50\u6C34",\u5409\u51F6:`
     1.\u7528\u795E\u5B50\u5B59\u4EA5\u6C34\uFF0C\u6708\u7834\uFF0C\u65E5\u751F\uFF0C\u51F6
     2.\u4E16\u723B\u7236\u6BCD\u4E11\u571F\uFF0C\u6708\u751F\uFF0C\u4E16\u514B\u7528\u795E\uFF0C\u51F6
     `,\u5E94\u671F:"",\u7EC6\u8282:"...",\u542F\u793A:"\u7236\u6BCD\u6301\u4E16\uFF0C\u5999\u836F\u96BE\u533B"}],n=a.map((u,E)=>({id:`00${E}`.slice(-3),...u})),F=C.guali;console.log("\u{1F680} ~ file: guali.ts:4 ~ guali:",F);C.transaction("rw",F,async()=>{const u=await F.toArray();F.bulkPut(n),console.log("\u{1F680} ~ file: guali.ts:11 ~ db.transaction ~ data:",u)}).catch(u=>{console.log("\u{1F680} ~ file: guali.ts:17 ~ db.transaction ~ e:",u),C.delete()});const e=u=>F.put(u),s=u=>F.put(u),c=u=>F.delete(u),i=()=>F.toArray(),r=(u,E)=>F.orderBy("\u5360\u95EE").filter(A=>{var B;return!!((B=A[u])!=null&&B.includes(E))}).toArray(),g={add:e,update:s,remove:c,get:i,query:r};function m(u){const E=o("emitter");D(()=>{E.on("on-click-right",u)}),t(()=>{E.off("on-click-right",u)})}export{g,m as u};
