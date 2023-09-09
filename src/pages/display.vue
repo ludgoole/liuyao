@@ -54,7 +54,7 @@ const 月建 = query.月建 || lunar.getMonthZhi()
 const 日建 = query.日建 || lunar.getDayInGanZhi()
 const 时建 = query.时建 || lunar.getTimeInGanZhi()
 const 旬空 = query.旬空 || lunar.getDayXunKong()
-const 月支 = 月建 as DATABASE.Dizhi_Key
+const 月支 = 月建.slice(-1) as DATABASE.Dizhi_Key
 const 日支 = 日建.slice(-1) as DATABASE.Dizhi_Key
 const 日干 = 日建.slice(0, 1) as DATABASE.Tiangan_Key
 const 驿马 = dizhi[日支].驿马
@@ -113,6 +113,10 @@ const onChange = (_纳甲: string) => {
   因缘.value = yinyuan[五行][日支]
 }
 
+const onReady = (_纳甲: string) => {
+  onChange(用神.value || _纳甲)
+}
+
 const onSave = () => {
   gualiDb.add({
     id,
@@ -120,8 +124,10 @@ const onSave = () => {
     占类,
     卦主,
     卦象: 卦象.value,
+    年建,
     月建,
     日建,
+    时建,
     旬空,
     用神: 用神.value,
     吉凶: 吉凶.value,
@@ -155,16 +161,16 @@ useMitt(onSave)
   <div class="Display" py-4 text-left>
     <header px-4>
       <p flex-center>
-        <span whitespace-nowrap>摇卦：</span><VanField v-model="卦象" class="!p-0" placeholder="请输入卦象" @change="toDisplay" />
+        <span whitespace-nowrap>卦象：</span><VanField v-model="卦象" class="!p-0" @change="toDisplay" />
       </p>
       <p flex-center>
-        <span whitespace-nowrap @click="onSave">占问：</span><VanField v-model="占问" class="!p-0" placeholder="请输入用户名" />
+        <span whitespace-nowrap @click="onSave">占问：</span><VanField v-model="占问" class="!p-0" />
       </p>
       <p>
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
       </p>
-      <p @click="router.push('/thoery')">
-        干支：{{ 年建 }}年 {{ 月建 }}月 {{ 日建 }}日 {{ 时建 }}时
+      <p>
+        <span @click="router.push('/thoery')">干支：</span>{{ 年建 }}年 {{ 月建 }}月 {{ 日建 }}日 {{ 时建 }}时
         <span ml-2>({{ 旬空 }})</span>
       </p>
       <p>
@@ -179,6 +185,7 @@ useMitt(onSave)
         :yongshen="用神"
         :guaxiang="主卦"
         @on-change="onChange"
+        @on-ready="onReady"
       />
     </section>
     <VanCollapse v-model="activeName" accordion :border="false" mt-4>

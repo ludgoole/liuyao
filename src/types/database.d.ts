@@ -112,8 +112,10 @@ declare namespace DATABASE {
     '占问': string;
     '占类': string;
     '卦主': string;
+    '年建'?: string;
     '月建': string;
     '日建': string;
+    '时建'?: string;
     '旬空': string;
     '卦象': string;
     '用神': string;

@@ -15,6 +15,11 @@ export const menus = [
     icon: 'bookmark-o',
   },
   {
+    name: '思考',
+    path: '/think',
+    icon: 'records',
+  },
+  {
     name: '卦例',
     path: '/book',
     icon: 'font-o',

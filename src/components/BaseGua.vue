@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<{
 })
 
 // emit
-const emit = defineEmits(['on-change'])
+const emit = defineEmits(['on-ready', 'on-change'])
 
 const 六亲_简化 = {
   父母: '父',
@@ -75,7 +75,7 @@ const fontSize = computed(() => `${props.size / 2}px`)
 
 // mounted
 onMounted(() => {
-  props.hasDongyao && emit('on-change', 纳甲.value[0])
+  props.hasDongyao && emit('on-ready', 纳甲.value[0])
 })
 </script>
 

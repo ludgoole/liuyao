@@ -1,8 +1,7 @@
 <route lang="yaml">
 meta:
   title: 取象
-  leftArrow: true
-  </route>
+</route>
 
 <script lang="ts" setup>
 import Detail from '@/mock/detail'
@@ -25,6 +24,10 @@ const detail = computed(() => Detail[typeName.value] as { [key: string]: string 
 const query = () => {
   console.log('🚀 ~ file: detail.vue:20 ~ query ~ data:', types)
 }
+const change = (type: Key) => {
+  typeName.value = type
+  search.value = ''
+}
 </script>
 
 <template>
@@ -35,10 +38,7 @@ const query = () => {
           v-for="type in types" :key="type"
           :type="typeName === type ? 'primary' : 'default'"
           size="large"
-          @click="() => {
-            typeName = type;
-            search = '';
-          }"
+          @click="change(type)"
         >
           {{ type }}
         </VanTag>
@@ -58,7 +58,7 @@ const query = () => {
         <p>
           <span font-800>{{ key }}</span>
           <b>：</b>
-          <span>{{ val }}</span>
+          <span>{{ typeof val === 'string' ? val : Object.values(val).join('；') }}</span>
         </p>
       </li>
     </ul>

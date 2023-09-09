@@ -5,7 +5,7 @@ export function cn2en(guali: DATABASE.Guali_EN) {
   }, {})
 }
 export function en2cn(gualiList: DATABASE.Guali_EN[]) {
-  const cnKeys = ['占问', '占类', '卦主', '卦象', '月建', '日辰', '旬空', '用神', '吉凶', '应期', '细节', '启示']
+  const cnKeys = ['占问', '占类', '卦主', '卦象', '年建', '月建', '日辰', '时建', '旬空', '用神', '吉凶', '应期', '细节', '启示']
 
   return gualiList.map((gualiEn) => {
     return Object.keys(gualiEn).reduce((a: DATABASE.Guali_EN, key) => {
