@@ -5,7 +5,7 @@ meta:
 
 <script lang="ts" setup>
 import Detail from '@/mock/detail'
-type Key = '八卦' | '爻位' | '地支' | '五行' | '六亲' | '六神' | '因缘' | '神煞'
+type Key = '八卦' | '爻位' | '地支' | '五行' | '六亲' | '六神' | '因缘' | '神煞' | '入墓' | '空亡'
 
 const route = useRoute()
 
@@ -48,7 +48,16 @@ const change = (type: Key) => {
     </VanSticky>
     <ul v-if="search" m-4 text-justify>
       <li v-for="key in search.split('、')" :key="key">
-        <p>
+        <ul v-if="typeof detail[key] === 'object'">
+          <li v-for="(val, key1) in detail[key]" :key="key1">
+            <p>
+              <span font-800>{{ key1 }}</span>
+              <b>：</b>
+              <span>{{ typeof val === 'string' ? val : Object.values(val).join('；') }}</span>
+            </p>
+          </li>
+        </ul>
+        <p v-else>
           {{ detail ? detail[key] : '' }}
         </p>
       </li>

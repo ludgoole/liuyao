@@ -97,11 +97,6 @@ onMounted(() => {
             'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
           }"
         >
-          <!--
-            <p v-if="hasLiushen" class="mr-2">
-            {{ 六神[index] }}
-            </p>
-          -->
           <template v-if="hasDongyao">
             <p color-gray-4>
               {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}
@@ -144,13 +139,13 @@ onMounted(() => {
               {{ yao === 6 ? '×' : yao === 9 ? 'o' : yao === 7 ? '、' : '、、' }}
             </span>
             <span v-else inline-block translate-y--4px>
-              {{ yao % 2 === 0 ? '、' : '、、' }}
+              {{ yao % 2 === 0 ? '、、' : '、' }}
             </span>
           </p>
-          <p v-if="hasShiying" w-1em translate-y-8px mr-2>
+          <p v-if="hasShiying" w-1em translate-y-6px mr-2>
             {{ 世应[`${index + 1}`] === '世' ? 卦?.八宫.slice(0, 1) : 世应[`${index + 1}`] }}
           </p>
-          <p v-if="hasLiushen" translate-y-8px>
+          <p v-if="hasLiushen" translate-y-6px>
             {{ 六神[index] }}
           </p>
         </div>
