@@ -75,7 +75,7 @@ const fontSize = computed(() => `${props.size / 2}px`)
 
 // mounted
 onMounted(() => {
-  props.hasDongyao && emit('on-ready', 纳甲.value[0])
+  props.hasDongyao && emit('on-ready', 纳甲.value.find((v, i) => 世应.value[i + 1] === '世'))
 })
 </script>
 

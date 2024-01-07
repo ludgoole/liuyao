@@ -10,21 +10,21 @@ import img_dizhi from '@/assets/image/dizhi.webp'
 import img_zixing from '@/assets/image/zixing.webp'
 import img_wuxing from '@/assets/image/wuxing.png'
 
-const router = useRouter()
-const 卦例 = ref('')
+// const router = useRouter()
+// const 卦例 = ref('')
 
-const onSearch = (val: string) => {
-  const [卦象, 月建, 日建, 旬空] = val.split(' ')
-  console.log(val)
-  router.replace({
-    path: '/display',
-    query: { 卦象, 月建, 日建, 旬空, ts: Date.now() },
-  })
-}
+// const onSearch = (val: string) => {
+//   const [卦象, 月建, 日建, 旬空] = val.split(' ')
+//   console.log(val)
+//   router.replace({
+//     path: '/display',
+//     query: { 卦象, 月建, 日建, 旬空, ts: Date.now() },
+//   })
+// }
 </script>
 
 <template>
-  <VanSearch v-model="卦例" class="pt-4" placeholder="请输入卦例" @search="onSearch" />
+  <!-- <VanSearch v-model="卦例" class="pt-4" placeholder="896898 申 辛卯 午未" @search="onSearch" /> -->
   <div>
     <img :src="img_wuxing" />
     <img :src="img_dizhi" />

@@ -1,8 +1,13 @@
 export const menus = [
   {
-    name: '首页',
+    name: '摇卦',
     path: '/',
     icon: 'home-o',
+  },
+  {
+    name: '卜卦',
+    path: '/query',
+    icon: 'clock-o',
   },
   {
     name: '排盘',
@@ -29,4 +34,20 @@ export const menus = [
   //   path: '/mine',
   //   icon: 'user-circle-o',
   // },
+]
+
+export const types = [
+  '天时',
+  '胎产',
+  '考试',
+  '求职',
+  '求财',
+  '婚姻',
+  '出行',
+  '行人',
+  '失物',
+  '疾病',
+  '医药',
+  '家宅',
+  '来意',
 ]

@@ -1,6 +1,6 @@
 <route lang="yaml">
 meta:
-  title: 首页
+  title: 摇卦
   roles: [ADMIN]
 </route>
 

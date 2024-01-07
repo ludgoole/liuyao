@@ -57,6 +57,8 @@ const 旬空 = query.旬空 || lunar.getDayXunKong()
 const 月支 = 月建.slice(-1) as DATABASE.Dizhi_Key
 const 日支 = 日建.slice(-1) as DATABASE.Dizhi_Key
 const 日干 = 日建.slice(0, 1) as DATABASE.Tiangan_Key
+const 月支_五行 = dizhi[月支].五行 as DATABASE.Wuxing_Key
+const 日支_五行 = dizhi[日支].五行 as DATABASE.Wuxing_Key
 const 驿马 = dizhi[日支].驿马
 const 桃花 = dizhi[日支].桃花
 const 禄神 = tiangan[日干].禄神
@@ -73,11 +75,17 @@ const 三合 = ref('')
 const 三刑 = ref('')
 
 // 断卦
+const 世爻 = ref('')
 const 用神 = ref(query.用神 as string || '')
 const 吉凶 = ref(query.吉凶 as string || '')
 const 应期 = ref(query.应期 as string || '')
 const 细节 = ref(query.细节 as string || '')
 const 启示 = ref(query.启示 as string || '')
+const 用神_六亲 = computed(() => 用神.value.slice(0, 2) as DATABASE.Wuxing_Key)
+const 用神_地支 = computed(() => 用神.value.slice(-2, -1) as DATABASE.Dizhi_Key)
+const 用神_五行 = computed(() => 用神.value.slice(-1) as DATABASE.Wuxing_Key)
+const 世爻_地支 = computed(() => 世爻.value.slice(-2, -1) as DATABASE.Dizhi_Key)
+const 世爻_五行 = computed(() => 世爻.value.slice(-1) as DATABASE.Wuxing_Key)
 
 // 细节
 const 卦位 = ref(0)
@@ -87,17 +95,55 @@ const 神煞 = ref('')
 const 上卦 = computed(() => 卦象.value.slice(3).split('').map((v) => Number(v) % 2).join(''))
 const 下卦 = computed(() => 卦象.value.slice(0, 3).split('').map((v) => Number(v) % 2).join(''))
 const 八卦 = computed(() => 卦位.value < 3 ? bagua[下卦.value] : bagua[上卦.value])
+const 生克冲合 = (爻 = '日') => {
+  let str = ''
+  if (爻 === '月') {
+    if (wuxing[用神_五行.value][月支_五行] === '父母')
+      str += '月生'
+    else if (wuxing[用神_五行.value][月支_五行] === '官鬼')
+      str += '月克'
+
+    if (dizhi[用神_地支.value].六冲 === 月支)
+      str += '月破'
+    else if (dizhi[用神_地支.value].六合 === 月支)
+      str += '月合'
+  }
+  else if (爻 === '日') {
+    if (wuxing[用神_五行.value][日支_五行] === '父母')
+      str += '日生'
+    else if (wuxing[用神_五行.value][日支_五行] === '官鬼')
+      str += '日克'
+
+    if (dizhi[用神_地支.value].六冲 === 日支)
+      str += '日散'
+    else if (dizhi[用神_地支.value].六合 === 日支)
+      str += '日合'
+  }
+  else {
+    if (wuxing[用神_五行.value][世爻_五行.value] === '子孙')
+      str += '生世'
+    else if (wuxing[用神_五行.value][世爻_五行.value] === '妻财')
+      str += '克世'
+
+    if (dizhi[用神_地支.value].六冲 === 世爻_地支.value)
+      str += '冲世'
+    else if (dizhi[用神_地支.value].六合 === 世爻_地支.value)
+      str += '合世'
+  }
+
+  return str || '--'
+}
 
 // method
-const onChange = (_纳甲: string) => {
-  if (!_纳甲) return
+const onChange = (动爻: string) => {
+  if (!动爻) return
 
-  const 五行 = _纳甲.slice(-1) as DATABASE.Wuxing_Key
-  const 地支 = _纳甲.slice(-2, -1) as DATABASE.Dizhi_Key
+  const 五行 = 动爻.slice(-1) as DATABASE.Wuxing_Key
+  const 地支 = 动爻.slice(-2, -1) as DATABASE.Dizhi_Key
   const 神煞_天干 = 天干神煞.find((神煞) => tiangan[日干][神煞] === 地支) || ''
   const 神煞_地支 = 地支神煞.find((神煞) => dizhi[日支][神煞] === 地支) || ''
 
-  用神.value = _纳甲
+  用神.value = 动爻
   元神.value = wuxing[五行].元神
   忌神.value = wuxing[五行].忌神
   墓库.value = wuxing[五行].生 + wuxing[五行].旺 + wuxing[五行].墓 + wuxing[五行].绝
@@ -107,14 +153,15 @@ const onChange = (_纳甲: string) => {
   三合.value = dizhi[地支].三合
   三刑.value = dizhi[地支].三刑
 
-  卦位.value = 卦.value.纳甲.indexOf(_纳甲)
+  卦位.value = 卦.value.纳甲.indexOf(动爻)
   六神.value = tiangan[日干].六神[卦位.value]
   神煞.value = [神煞_天干, 神煞_地支].filter(Boolean).join('、') || '--'
   因缘.value = yinyuan[五行][日支]
 }
 
-const onReady = (_纳甲: string) => {
-  onChange(用神.value || _纳甲)
+const onReady = (_世爻: string) => {
+  世爻.value = _世爻
+  onChange(用神.value || 世爻.value)
 }
 
 const onSave = () => {
@@ -242,7 +289,6 @@ useMitt(onSave)
           <div>
             <p>阴阳：{{ 主卦[卦位] % 2 === 0 ? '阴爻' : '阳爻' }}</p>
             <p>动静：{{ 主卦[卦位] % 3 === 0 ? '动爻' : '静爻' }}</p>
-            <!-- <p>飞伏：{{ }}</p> -->
             <p @click="toDeatil({ typeName: '神煞', key: `${神煞}` })">
               神煞：{{ 神煞 }}
             </p>
@@ -251,18 +297,24 @@ useMitt(onSave)
             </p>
           </div>
           <div>
-            <p @click="toDeatil({ typeName: '地支', key: `${用神[2]}` })">
-              地支：{{ 用神[2] }}
+            <p @click="toDeatil({ typeName: '地支', key: 用神_地支 })">
+              地支：{{ 用神_地支 }}
             </p>
-            <p @click="toDeatil({ typeName: '五行', key: `${用神[3]}` })">
-              五行：{{ 用神[3] }}
+            <p @click="toDeatil({ typeName: '五行', key: 用神_五行 })">
+              五行：{{ 用神_五行 }}
             </p>
-            <p @click="toDeatil({ typeName: '六亲', key: `${用神.slice(0, 2)}` })">
-              六亲：{{ 用神.slice(0, 2) }}
+            <p @click="toDeatil({ typeName: '六亲', key: 用神_六亲 })">
+              六亲：{{ 用神_六亲 }}
             </p>
             <p @click="toDeatil({ typeName: '六神', key: `${六神}` })">
               六神：{{ 六神 }}
             </p>
+          </div>
+          <div>
+            <p>日：{{ 生克冲合('日') }}</p>
+            <p>月：{{ 生克冲合('月') }}</p>
+            <p>空：{{ 旬空.includes(用神_地支) ? '旬空' : '--' }}</p>
+            <p>世：{{ 生克冲合('世') }}</p>
           </div>
         </section>
       </VanCollapseItem>
