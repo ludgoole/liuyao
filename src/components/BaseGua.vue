@@ -46,6 +46,7 @@ const 六亲_简化 = {
 // data
 const { zhouyi } = useZhouyiStore()
 const { yijing, tiangan, dizhi, wuxing, yinyuan } = zhouyi as DATABASE.Zhouyi
+const 爻位 = ref(0)
 
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
@@ -76,15 +77,15 @@ const fontSize = computed(() => `${props.size / 2}px`)
 // mounted
 onMounted(() => {
   const 世爻 = 纳甲.value.find((v, i) => 世应.value[i + 1] === '世')
-  const 爻位 = 纳甲.value.findIndex((v, i) => 世应.value[i + 1] === '世')
-  console.log('🚀 ~ onMounted ~ 爻位:', 纳甲.value, 世爻, 爻位)
-  props.hasDongyao && emit('on-ready', 世爻, 爻位)
+  爻位.value = 纳甲.value.findIndex((v, i) => 世应.value[i + 1] === '世')
+
+  props.hasDongyao && emit('on-ready', 世爻, 爻位.value)
 })
 </script>
 
 <template>
   <div class="BaseGua flex flex-col-reverse">
-    <div v-for="(yao, index) in guaxiang" :key="index" class="item flex items-center" @click="emit('on-change', 纳甲[index], index)">
+    <div v-for="(yao, index) in guaxiang" :key="index" class="item flex items-center" @click="爻位 = index; emit('on-change', 纳甲[index], index)">
       <div v-if="hasNajia" class="BaseGua-left">
         <div v-if="index === 5">
           <p opacity-0>
@@ -94,7 +95,7 @@ onMounted(() => {
         <div
           flex
           :class="{
-            'font-bold': 用神_五行 && 纳甲[index]?.includes(用神_五行.toString()),
+            'font-bold': 爻位 === index,
             'color-rose': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
             'color-green': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
             'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
