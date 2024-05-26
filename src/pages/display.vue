@@ -51,7 +51,7 @@ const 主卦 = ref(卦象.value.split('').map(Number))
 // const 变卦 = 主卦.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
 const 年建 = query.年建 || lunar.getYearZhi()
 const 月建 = query.月建 || lunar.getMonthZhi()
-const 日建 = query.日建 || lunar.getDayInGanZhi()
+const 日建 = (`甲${query.日建 || lunar.getDayInGanZhi()}`).slice(-2)
 const 时建 = query.时建 || lunar.getTimeInGanZhi()
 const 旬空 = query.旬空 || lunar.getDayXunKong()
 const 月支 = 月建.slice(-1) as DATABASE.Dizhi_Key
@@ -107,6 +107,18 @@ const 生克冲合 = (爻 = '日') => {
       str += '月破'
     else if (dizhi[用神_地支.value].六合 === 月支)
       str += '月合'
+
+    if (dizhi[用神_地支.value].三刑 === 月支)
+      str += '月刑'
+
+    if (wuxing[用神_五行.value].生 === 月支)
+      str += '月长生'
+    else if (wuxing[用神_五行.value].旺 === 月支)
+      str += '月帝旺'
+    else if (wuxing[用神_五行.value].墓 === 月支)
+      str += '月墓'
+    else if (wuxing[用神_五行.value].绝 === 月支)
+      str += '月绝'
   }
   else if (爻 === '日') {
     if (wuxing[用神_五行.value][日支_五行] === '父母')
@@ -118,6 +130,18 @@ const 生克冲合 = (爻 = '日') => {
       str += '日散'
     else if (dizhi[用神_地支.value].六合 === 日支)
       str += '日合'
+
+    if (dizhi[用神_地支.value].三刑 === 日支)
+      str += '日刑'
+
+    if (wuxing[用神_五行.value].生 === 日支)
+      str += '日长生'
+    else if (wuxing[用神_五行.value].旺 === 日支)
+      str += '日帝旺'
+    else if (wuxing[用神_五行.value].墓 === 日支)
+      str += '日墓'
+    else if (wuxing[用神_五行.value].绝 === 日支)
+      str += '日绝'
   }
   else {
     if (wuxing[用神_五行.value][世爻_五行.value] === '子孙')
@@ -129,13 +153,16 @@ const 生克冲合 = (爻 = '日') => {
       str += '冲世'
     else if (dizhi[用神_地支.value].六合 === 世爻_地支.value)
       str += '合世'
+
+    if (dizhi[用神_地支.value].三刑 === 世爻_地支.value)
+      str += '刑世'
   }
 
   return str || '--'
 }
 
 // method
-const onChange = (动爻: string) => {
+const onChange = (动爻: string, index = 0) => {
   if (!动爻) return
 
   const 五行 = 动爻.slice(-1) as DATABASE.Wuxing_Key
@@ -153,15 +180,15 @@ const onChange = (动爻: string) => {
   三合.value = dizhi[地支].三合
   三刑.value = dizhi[地支].三刑
 
-  卦位.value = 卦.value.纳甲.indexOf(动爻)
+  卦位.value = index
   六神.value = tiangan[日干].六神[卦位.value]
   神煞.value = [神煞_天干, 神煞_地支].filter(Boolean).join('、') || '--'
   因缘.value = yinyuan[五行][日支]
 }
 
-const onReady = (_世爻: string) => {
+const onReady = (_世爻: string, index = 0) => {
   世爻.value = _世爻
-  onChange(用神.value || 世爻.value)
+  onChange(世爻.value, index)
 }
 
 const onSave = () => {
@@ -254,25 +281,24 @@ useMitt(onSave)
         <section flex-justify text-size-sm whitespace-nowrap pr-3>
           <div>
             <p>月建：{{ 月建 }}</p>
-            <p>六冲：{{ dizhi[月支].六冲 }}</p>
-            <p>六合：{{ dizhi[月支].六合 }}</p>
-            <p>三刑：{{ dizhi[月支].三刑 }}</p>
+            <p>月合：{{ dizhi[月支].六合 }}</p>
+            <p>月破：{{ dizhi[月支].六冲 }}</p>
+            <p>月刑：{{ dizhi[月支].三刑 }}</p>
             <p>三合：{{ dizhi[月支].三合 }}</p>
           </div>
           <div>
             <p>日建：{{ 日建.slice(-1) }}</p>
-            <p>六冲：{{ dizhi[日支].六冲 }}</p>
-            <p>六合：{{ dizhi[日支].六合 }}</p>
-            <p>三刑：{{ dizhi[日支].三刑 }}</p>
+            <p>日合：{{ dizhi[日支].六合 }}</p>
+            <p>日散：{{ dizhi[日支].六冲 }}</p>
+            <p>日刑：{{ dizhi[日支].三刑 }}</p>
             <p>三合：{{ dizhi[日支].三合 }}</p>
           </div>
           <div>
             <p>用神：{{ 用神 }}</p>
-            <p>六冲：{{ 六冲 }}</p>
-            <p>六合：{{ 六合 }}</p>
+            <p>冲合：{{ 六合 }}{{ 六冲 }}</p>
             <p>三刑：{{ 三刑 }}</p>
             <p>三合：{{ 三合 }}</p>
-            <!-- <p>墓库：{{ 墓库 }}</p> -->
+            <p>因缘：{{ wuxing[用神_五行].生 + wuxing[用神_五行].旺 + wuxing[用神_五行].墓 + wuxing[用神_五行].绝 }}</p>
           </div>
         </section>
       </VanCollapseItem>

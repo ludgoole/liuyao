@@ -102,7 +102,7 @@ const onSubmit = (values: any) => {
         placeholder="戌亥"
       />
     </VanCellGroup>
-    <div mt-4 px-6>
+    <div mt-30 px-6>
       <VanButton round block type="primary" native-type="submit">
         开始排盘
       </VanButton>

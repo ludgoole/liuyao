@@ -92,6 +92,7 @@ declare namespace DATABASE {
     '水': Wuxing_Item
     '火': Wuxing_Item
     '土': Wuxing_Item
+    [key: string]: Wuxing_Item
   }
 
   interface Wuxing_Item {
@@ -106,6 +107,7 @@ declare namespace DATABASE {
     '绝': string
     '元神': string
     '忌神': string
+    [key: string]: string
   }
   interface Guali {
     'id': string;
@@ -132,6 +134,7 @@ declare namespace DATABASE {
     '水': Yinyuan_Item;
     '火': Yinyuan_Item;
     '土': Yinyuan_Item;
+    [key: string]: Yinyuan_Item;
   }
 
   interface Yinyuan_Item {
