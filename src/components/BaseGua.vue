@@ -95,9 +95,9 @@ onMounted(() => {
         <div
           flex
           :class="{
-            'font-bold': 爻位 === index,
-            'color-rose': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
-            'color-green': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
+            'font-bold': 用神 === 纳甲[index],
+            'color-green font-bold': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
+            'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
             'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
           }"
         >
