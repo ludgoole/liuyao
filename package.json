@@ -3,8 +3,8 @@
   "packageManager": "pnpm@7.0.0",
   "scripts": {
     "build": "vite build",
-    "preview": "vite preview --port 8090",
-    "dev": "vite --port 8090",
+    "preview": "vite preview --port 666",
+    "dev": "vite --port 666",
     "dev:test": "vite serve --mode test",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "@byyuurin/eslint-config": "^0.8.4",
     "@iconify/json": "^2.1.85",
+    "@types/node": "^24.9.2",
     "@unocss/reset": "^0.45.1",
     "@unocss/transformer-directives": "^0.45.1",
     "@vitejs/plugin-vue": "^3.0.1",
@@ -55,7 +56,6 @@
     "vite-copy-plugin": "^0.4.0",
     "vite-plugin-easy-mock": "^1.0.3",
     "vite-plugin-pages": "^0.25.0",
-    "vite-plugin-prerender": "^1.0.8",
     "vite-plugin-singlefile": "^0.12.2",
     "vitest": "^0.19.1",
     "vue-tsc": "^0.39.2"

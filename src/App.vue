@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import zhouyiDb from '@/indexdb/functions/zhouyi'
+import 周易 from '@/book/周易'
 import { useZhouyiStore } from '@/stores/zhouyi'
 const { zhouyi } = toRefs(useZhouyiStore())
 const route = useRoute()
@@ -7,13 +7,10 @@ const isShowHeader = ref(false)
 const isShowFooter = ref(true)
 
 // create
-zhouyiDb.get().then((res) => {
-  console.log('🚀 ~ file: App.vue:12 ~ zhouyiDb.get ~ res:', res)
-  zhouyi.value = res[0]
-})
+zhouyi.value = 周易
 
 watch(() => route.meta, (meta) => {
-  // isShowHeader.value = !meta.hideHeader as boolean
+  isShowHeader.value = !meta.hideHeader as boolean
   isShowFooter.value = !meta.hideFooter as boolean
 })
 </script>

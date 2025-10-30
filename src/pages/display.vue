@@ -10,7 +10,7 @@ meta:
 import moment from 'moment'
 import { Lunar } from 'lunar-javascript'
 import { Toast } from 'vant'
-import gualiDb from '@/indexdb/functions/guali'
+import gualiDb from '@/book/卦例'
 import { useZhouyiStore } from '@/stores/zhouyi'
 import useMitt from '@/todos/use-mitt'
 
@@ -194,6 +194,7 @@ const onReady = (_世爻: string, index = 0) => {
 const onSave = () => {
   gualiDb.add({
     id,
+    书名: '自占自卜',
     占问: 占问.value,
     占类,
     卦主,

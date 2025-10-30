@@ -8,7 +8,7 @@ meta:
 <script lang="ts" setup>
 import { Toast } from 'vant'
 import { useZhouyiStore } from '@/stores/zhouyi'
-import gualiDb from '@/indexdb/functions/guali'
+import gualiDb, { type Guali } from '@/book/卦例'
 
 import { downloadFile } from '@/utils'
 import useMitt from '@/todos/use-mitt'
@@ -18,6 +18,7 @@ const router = useRouter()
 // data
 const { yijing } = zhouyi as DATABASE.Zhouyi
 const types = [
+  '书名',
   '占问',
   '占类',
   // '卦主',
@@ -32,7 +33,7 @@ const types = [
   '启示',
   '收藏',
 ] as DATABASE.Guali_Key[]
-const book = ref<DATABASE.Guali[]>([])
+const book = ref<Guali[]>([])
 const typeName = ref<DATABASE.Guali_Key>('占问')
 const search = ref('')
 
@@ -49,21 +50,23 @@ const getZhigua = (卦象: string) => {
 }
 
 // method
-const onLoad = () => {
+const onLoad = async () => {
   console.log('🚀 ~ file: book.vue:53 ~ onLoad ~ onLoad:')
-  gualiDb.get().then((res) => {
-    book.value = res
-  })
+  const data = await gualiDb.get()
+
+  if (data)
+    book.value = data
 }
 
 const queryGua = () => {
   console.log('🚀 ~ file: book.vue:59 ~ queryGua ~ queryGua:', typeName.value, search.value)
   gualiDb.query(typeName.value, search.value).then((data) => {
-    book.value = data
+    if (data)
+      book.value = data
   })
 }
 
-const starGua = (卦: DATABASE.Guali, i: number) => {
+const starGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
@@ -73,7 +76,7 @@ const starGua = (卦: DATABASE.Guali, i: number) => {
     onLoad()
   })
 }
-const delGua = (卦: DATABASE.Guali, i: number) => {
+const delGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
@@ -83,7 +86,7 @@ const delGua = (卦: DATABASE.Guali, i: number) => {
   })
 }
 
-const toGua = (卦: DATABASE.Guali, i: number) => {
+const toGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
 
@@ -109,16 +112,17 @@ onLoad()
     <VanSticky :offset-top="0">
       <div bg-white py-2 px-4 flex-center justify="around">
         <VanTag
-          v-for="type in types" :key="type"
-          :type="typeName === type ? 'primary' : 'default'"
-          size="large"
+          v-for="type in types" :key="type" :type="typeName === type ? 'primary' : 'default'" size="large"
           @click="() => typeName = type"
         >
           {{ type }}
         </VanTag>
       </div>
 
-      <VanField v-model="search" label="" placeholder="请输入" right-icon="search" @click-right-icon="queryGua" />
+      <VanField
+        v-model="search" label="" placeholder="请输入" right-icon="search" @click-right-icon="queryGua"
+        @keydown.enter.prevent="queryGua"
+      />
     </VanSticky>
 
     <ul mt-4>
@@ -126,10 +130,7 @@ onLoad()
         <VanSwipeCell>
           <template #left>
             <VanButton
-              square
-              type="primary"
-              :icon="卦.收藏 === '1' ? 'star' : 'star-o'"
-              :text="卦.收藏 === '1' ? '取消' : '收藏'"
+              square type="primary" :icon="卦.收藏 === '1' ? 'star' : 'star-o'" :text="卦.收藏 === '1' ? '取消' : '收藏'"
               @click="starGua(卦, i)"
             />
           </template>

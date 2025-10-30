@@ -10,7 +10,6 @@ import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
 import { viteSingleFile } from 'vite-plugin-singlefile'
-import vitePrerender from 'vite-plugin-prerender'
 import getBuild from './vite.build'
 
 // https://vitejs.dev/config/
@@ -39,10 +38,6 @@ export default ({ mode }: ConfigEnv) => {
       pages(),
       unocss(),
       VITE_APP_DIST === 'SSF' && viteSingleFile(),
-      VITE_APP_DIST === 'SSG' && vitePrerender({
-        staticDir: resolve(__dirname, 'dist'),
-        routes: ['/', '/login'],
-      }),
     ],
     build: getBuild(VITE_APP_DIST),
     server: {
