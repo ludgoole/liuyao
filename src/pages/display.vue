@@ -61,8 +61,12 @@ const 月支_五行 = dizhi[月支].五行 as DATABASE.Wuxing_Key
 const 日支_五行 = dizhi[日支].五行 as DATABASE.Wuxing_Key
 const 驿马 = dizhi[日支].驿马
 const 桃花 = dizhi[日支].桃花
+const 华盖 = dizhi[日支].华盖
+const 谋星 = dizhi[日支].谋星
 const 禄神 = tiangan[日干].禄神
 const 贵人 = tiangan[日干].贵人
+const 羊刃 = tiangan[日干].羊刃
+const 文昌 = tiangan[日干].文昌
 
 // 辅助
 // const 用神 = ref('')
@@ -77,6 +81,8 @@ const 三刑 = ref('')
 // 断卦
 const 世爻 = ref('')
 const 用神 = ref(query.用神 as string || '')
+console.log('🚀 ~ 用神:', 用神)
+const 现状 = ref(query.现状 as string || '')
 const 吉凶 = ref(query.吉凶 as string || '')
 const 应期 = ref(query.应期 as string || '')
 const 细节 = ref(query.细节 as string || '')
@@ -163,6 +169,7 @@ const 生克冲合 = (爻 = '日') => {
 
 // method
 const onChange = (动爻: string, index = 0) => {
+  console.log('🚀 ~ onChange ~ 动爻:', 动爻, index)
   if (!动爻) return
 
   const 五行 = 动爻.slice(-1) as DATABASE.Wuxing_Key
@@ -171,6 +178,7 @@ const onChange = (动爻: string, index = 0) => {
   const 神煞_地支 = 地支神煞.find((神煞) => dizhi[日支][神煞] === 地支) || ''
 
   用神.value = 动爻
+  console.log('🚀 ~ onChange ~ 用神:', 用神)
   元神.value = wuxing[五行].元神
   忌神.value = wuxing[五行].忌神
   墓库.value = wuxing[五行].生 + wuxing[五行].旺 + wuxing[五行].墓 + wuxing[五行].绝
@@ -205,6 +213,7 @@ const onSave = () => {
     时建,
     旬空,
     用神: 用神.value,
+    现状: 现状.value,
     吉凶: 吉凶.value,
     应期: 应期.value,
     细节: 细节.value,
@@ -239,7 +248,7 @@ useMitt(onSave)
         <span whitespace-nowrap>卦象：</span><VanField v-model="卦象" class="!p-0" @change="toDisplay" />
       </p>
       <p flex-center>
-        <span whitespace-nowrap @click="onSave">占问：</span><VanField v-model="占问" class="!p-0" />
+        <span whitespace-nowrap>占问：</span><VanField v-model="占问" class="!p-0" />
       </p>
       <p>
         时间：{{ moment(new Date()).format('YYYY年MM月DD日HH时mm分') }}
@@ -250,6 +259,7 @@ useMitt(onSave)
       </p>
       <p>
         神煞：驿马-{{ 驿马 }}&nbsp;&nbsp;桃花-{{ 桃花 }}&nbsp;&nbsp;禄神-{{ 禄神 }}&nbsp;&nbsp;贵人-{{ 贵人 }}
+        <br /><span ml-12>华盖-{{ 华盖 }}&nbsp;&nbsp;谋星-{{ 谋星 }}&nbsp;&nbsp;羊刃-{{ 羊刃 }}&nbsp;&nbsp;文昌-{{ 文昌 }}</span>
       </p>
     </header>
     <section px-4 mt-4>
@@ -346,6 +356,13 @@ useMitt(onSave)
         </section>
       </VanCollapseItem>
       <VanCollapseItem title="批注" name="批注" :border="false">
+        <VanField
+          v-model="现状"
+          label="现状"
+          rows="1"
+          autosize
+          type="textarea"
+        />
         <VanField
           v-model="吉凶"
           label="吉凶"

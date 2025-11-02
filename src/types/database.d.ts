@@ -2,6 +2,7 @@ declare namespace DATABASE {
   interface Zhouyi {
     id: string
     bagua: {[key: string]: string}
+    baguaziran: {[key: string]: string}
     yijing: Yijing[]
     tiangan: Tiangan
     dizhi: Dizhi

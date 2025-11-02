@@ -14,6 +14,10 @@ export async function get<T>(key: string) {
   return await database.getItem<T[]>(key)
 }
 
+export async function set<T>(key: string, data: T[]) {
+  return await database.setItem(key, data)
+}
+
 export async function add<T extends Identifiable>(key: string, item: T) {
   let data = await database.getItem<T[]>(key) ?? []
   data.push(item)
@@ -73,6 +77,7 @@ export async function query<T>(key: string, prop: string, value: Type) {
 export function getDatabase<T extends Identifiable>(key: string) {
   return {
     get: () => get<T>(key),
+    set: (items: T[]) => set<T>(key, items),
     add: (item: T) => add<T>(key, item),
     bulkAdd: (items: T[]) => bulkAdd<T>(key, items),
     update: (item: T) => update<T>(key, item),

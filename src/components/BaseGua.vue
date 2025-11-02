@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<{
   gan: '甲',
   zhi: '子',
   yongshen: '',
+  hasCenter: false,
   hasLiushen: false,
   hasNajia: true,
   hasDongyao: true,
@@ -45,7 +46,7 @@ const 六亲_简化 = {
 
 // data
 const { zhouyi } = useZhouyiStore()
-const { yijing, tiangan, dizhi, wuxing, yinyuan } = zhouyi as DATABASE.Zhouyi
+const { yijing, tiangan, dizhi, wuxing, yinyuan, baguaziran } = zhouyi as DATABASE.Zhouyi
 const 爻位 = ref(0)
 
 // computed
@@ -76,16 +77,24 @@ const fontSize = computed(() => `${props.size / 2}px`)
 
 // mounted
 onMounted(() => {
-  const 世爻 = 纳甲.value.find((v, i) => 世应.value[i + 1] === '世')
-  爻位.value = 纳甲.value.findIndex((v, i) => 世应.value[i + 1] === '世')
+  if (props.yongshen) {
+    爻位.value = 5 - 纳甲.value.findIndex((v) => v === props.yongshen)
+    props.hasDongyao && emit('on-ready', props.yongshen, 爻位.value)
+  }
+  else {
+    const 世爻 = 纳甲.value.find((v, i) => 世应.value[i + 1] === '世')
+    爻位.value = 纳甲.value.findIndex((v, i) => 世应.value[i + 1] === '世')
 
-  props.hasDongyao && emit('on-ready', 世爻, 爻位.value)
+    props.hasDongyao && emit('on-ready', 世爻, 爻位.value)
+  }
 })
 </script>
 
 <template>
   <div class="BaseGua flex flex-col-reverse">
+    <!-- 爻象 -->
     <div v-for="(yao, index) in guaxiang" :key="index" class="item flex items-center" @click="爻位 = index; emit('on-change', 纳甲[index], index)">
+      <!-- 爻象左侧 -->
       <div v-if="hasNajia" class="BaseGua-left">
         <div v-if="index === 5">
           <p opacity-0>
@@ -95,35 +104,44 @@ onMounted(() => {
         <div
           flex
           :class="{
+            // 用神
             'font-bold': 用神 === 纳甲[index],
+            // 元神
             'color-green font-bold': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
+            // 忌神
             'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
+            // 暗动，旺相或旬空之爻逢日冲
             'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
           }"
         >
-          <template v-if="hasDongyao">
-            <p color-gray-4>
-              {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}
-            </p>
-            <p color-gray-4 mr-2>
-              {{ 卦宫_纳甲[index].slice(-2, -1) }}
-            </p>
-          </template>
+          <!-- 伏爻 -->
+          <p
+            v-if="hasDongyao" color-gray-4 mr-2 :class="{
+              'color-green font-bold': wuxing[用神_五行]?.元神 === 卦宫_纳甲[index].slice(-1),
+              'color-red font-bold': wuxing[用神_五行]?.忌神 === 卦宫_纳甲[index].slice(-1),
+            }"
+          >
+            {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}{{ 卦宫_纳甲[index].slice(-2, -1) }}
+          </p>
+          <!-- 六亲五行 -->
           <p>{{ getLiuqin(wuxing, 纳甲[index].slice(-1)) }}{{ 纳甲[index].slice(-2) }}</p>
+          <!-- 十二因缘 -->
           <p class="mr-2">
             {{ getYinyuan(用神_五行, 纳甲[index].slice(-2, -1)).slice(-1) }}
           </p>
         </div>
       </div>
+      <!-- 爻象 -->
       <div v-if="hasCenter" class="BaseGua-center">
         <div v-if="index === 5" flex-center>
           <p class="font-bold">
-            {{ 卦?.卦名 }}
+            {{ baguaziran[卦象.slice(3).join('')] }}{{ baguaziran[卦象.slice(0, 3).join('')] }}{{ 卦?.卦名 }}
           </p>
           <p>({{ 卦?.八宫.slice(0, 2) }}{{ 卦?.归游 }})</p>
         </div>
         <div class="BaseGua-yao m-1" :class="[yao % 2 === 0 ? 'yin' : 'yang']"></div>
       </div>
+      <!-- 爻象右侧 -->
       <div class="BaseGua-right text-left">
         <div v-if="index === 5">
           <p opacity-0>
@@ -132,6 +150,7 @@ onMounted(() => {
           </p>
         </div>
         <div flex>
+          <!-- 符号 -->
           <p w-2em text-xl color-gray-6>
             <span
               v-if="hasDongyao" inline-block :class="{
@@ -146,18 +165,21 @@ onMounted(() => {
               {{ yao % 2 === 0 ? '、、' : '、' }}
             </span>
           </p>
+          <!-- 世应 -->
           <p v-if="hasShiying" w-1em translate-y-6px mr-2>
             {{ 世应[`${index + 1}`] === '世' ? 卦?.八宫.slice(0, 1) : 世应[`${index + 1}`] }}
           </p>
+          <!-- 六神 -->
           <p v-if="hasLiushen" translate-y-6px>
             {{ 六神[index] }}
           </p>
         </div>
       </div>
     </div>
+    <!-- 卦名 -->
     <div v-if="!hasCenter" flex-center translate-y-10px>
       <p class="font-bold">
-        {{ 卦?.卦名 }}
+        {{ baguaziran[卦象.slice(3).join('')] }}{{ baguaziran[卦象.slice(0, 3).join('')] }}{{ 卦?.卦名 }}
       </p>
       <p>({{ 卦?.八宫.slice(0, 2) }}{{ 卦?.归游 }})</p>
     </div>
