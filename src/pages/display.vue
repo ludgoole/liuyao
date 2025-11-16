@@ -265,8 +265,10 @@ useMitt(onSave)
     <section px-4 mt-4>
       <LiuyaoGua
         :size="24"
+        :yuezhi="月支"
         :gan="日干"
         :zhi="日支"
+        :xunkong="旬空"
         :yongshen="用神"
         :guaxiang="主卦"
         @on-change="onChange"
