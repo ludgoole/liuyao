@@ -278,7 +278,7 @@ onMounted(() => {
             <span class="inline-block w-7">
               {{ getYueScore(纳甲[index].slice(-2, -1)) }}
             </span>
-            <span>
+            <span class="inline-block w-3">
               {{ getRiScore(纳甲[index].slice(-2, -1)) }}
             </span>
           </p>
