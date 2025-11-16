@@ -263,7 +263,7 @@ onMounted(() => {
               'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
               'color-yellow-5': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
-              //
+              // 旬空
               'line-through': xunkong.includes(纳甲[index].slice(-2, -1)),
             }"
           >
