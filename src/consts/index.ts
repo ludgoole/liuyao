@@ -5,25 +5,25 @@ export const menus = [
     icon: 'home-o',
   },
   {
-    name: '卜卦',
+    name: '排盘',
     path: '/query',
     icon: 'clock-o',
   },
-  {
-    name: '排盘',
-    path: '/display',
-    icon: 'clock-o',
-  },
+  // {
+  //   name: '排盘',
+  //   path: '/display',
+  //   icon: 'clock-o',
+  // },
   {
     name: '取象',
     path: '/detail',
     icon: 'bookmark-o',
   },
-  {
-    name: '思考',
-    path: '/think',
-    icon: 'records',
-  },
+  // {
+  //   name: '思考',
+  //   path: '/think',
+  //   icon: 'records',
+  // },
   {
     name: '卦例',
     path: '/book',
