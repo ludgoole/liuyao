@@ -260,7 +260,7 @@ onMounted(() => {
               'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
               'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
-              'w-14.5': size === 24,
+              'w-15': size === 24,
               'w-19': size === 32,
             }"
           >
