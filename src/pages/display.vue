@@ -105,49 +105,49 @@ const 生克冲合 = (爻 = '日') => {
   let str = ''
   if (爻 === '月') {
     if (wuxing[用神_五行.value][月支_五行] === '父母')
-      str += '月生'
+      str += '生'
     else if (wuxing[用神_五行.value][月支_五行] === '官鬼')
-      str += '月克'
+      str += '克'
 
     if (dizhi[用神_地支.value].六冲 === 月支)
-      str += '月破'
+      str += '破'
     else if (dizhi[用神_地支.value].六合 === 月支)
-      str += '月合'
+      str += '合'
 
     if (dizhi[用神_地支.value].三刑 === 月支)
-      str += '月刑'
+      str += '刑'
 
     if (wuxing[用神_五行.value].生 === 月支)
-      str += '月长生'
+      str += '长生'
     else if (wuxing[用神_五行.value].旺 === 月支)
-      str += '月帝旺'
+      str += '帝旺'
     else if (wuxing[用神_五行.value].墓 === 月支)
-      str += '月墓'
+      str += '墓'
     else if (wuxing[用神_五行.value].绝 === 月支)
-      str += '月绝'
+      str += '绝'
   }
   else if (爻 === '日') {
     if (wuxing[用神_五行.value][日支_五行] === '父母')
-      str += '日生'
+      str += '生'
     else if (wuxing[用神_五行.value][日支_五行] === '官鬼')
-      str += '日克'
+      str += '克'
 
     if (dizhi[用神_地支.value].六冲 === 日支)
-      str += '日散'
+      str += '散'
     else if (dizhi[用神_地支.value].六合 === 日支)
-      str += '日合'
+      str += '合'
 
     if (dizhi[用神_地支.value].三刑 === 日支)
-      str += '日刑'
+      str += '刑'
 
     if (wuxing[用神_五行.value].生 === 日支)
-      str += '日长生'
+      str += '长生'
     else if (wuxing[用神_五行.value].旺 === 日支)
-      str += '日帝旺'
+      str += '帝旺'
     else if (wuxing[用神_五行.value].墓 === 日支)
-      str += '日墓'
+      str += '墓'
     else if (wuxing[用神_五行.value].绝 === 日支)
-      str += '日绝'
+      str += '绝'
   }
   else {
     if (wuxing[用神_五行.value][世爻_五行.value] === '子孙')
