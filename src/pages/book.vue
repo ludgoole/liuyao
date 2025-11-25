@@ -110,7 +110,7 @@ onLoad()
 <template>
   <div class="Book">
     <VanSticky :offset-top="0">
-      <div bg-white py-2 px-4 flex-center justify="around">
+      <div bg-white py-2 px-4 whitespace-nowrap overflow-x-auto space-x-2>
         <VanTag
           v-for="type in types" :key="type" :type="typeName === type ? 'primary' : 'default'" size="large"
           @click="() => typeName = type"
