@@ -53,6 +53,7 @@ const 六亲_简化 = {
 const { zhouyi } = useZhouyiStore()
 const { yijing, tiangan, dizhi, wuxing, yinyuan, baguaziran } = zhouyi as DATABASE.Zhouyi
 const 爻位 = ref(0)
+const isShowScore = ref(false)
 
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
@@ -244,17 +245,13 @@ onMounted(() => {
         >
           <!-- 伏爻 -->
           <p
-            v-if="hasDongyao" color-gray-4 mr-2 :class="{
-              'color-green font-bold': wuxing[用神_五行]?.元神 === 卦宫_纳甲[index].slice(-1),
-              'color-red font-bold': wuxing[用神_五行]?.忌神 === 卦宫_纳甲[index].slice(-1),
-              'line-through': xunkong.includes(卦宫_纳甲[index].slice(-2, -1)),
-            }"
+            v-if="hasDongyao" color-gray-4 mr-2
           >
             {{ 六亲_简化[getLiuqin(wuxing, 卦宫_纳甲[index].slice(-1))] }}{{ 卦宫_纳甲[index].slice(-2, -1) }}
           </p>
           <!-- 六亲五行 -->
           <p
-            :class="{
+            class=" mr-0.5" :class="{
               // 用神
               'font-bold': 用神 === 纳甲[index],
               // 元神
@@ -262,19 +259,32 @@ onMounted(() => {
               // 忌神
               'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
-              'color-yellow-5': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
-              // 旬空
-              'line-through': xunkong.includes(纳甲[index].slice(-2, -1)),
+              'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
+              'w-14.5': size === 24,
+              'w-19': size === 32,
             }"
           >
-            {{ getLiuqin(wuxing, 纳甲[index].slice(-1)) }}{{ 纳甲[index].slice(-2) }}
+            <span>
+              {{ getLiuqin(wuxing, 纳甲[index].slice(-1)) }}
+            </span>
+            <!-- 旬空 -->
+            <span v-if="xunkong.includes(纳甲[index].slice(-2, -1))">({{ 纳甲[index].slice(-2, -1) }})</span>
+            <span
+              v-else :class="{
+                // 月破
+                'color-gray-4': dizhi[yuezhi].六冲 === 纳甲[index].slice(-2, -1),
+              }"
+            >{{ 纳甲[index].slice(-2, -1) }}</span>
+            <span>
+              {{ 纳甲[index].slice(-1) }}
+            </span>
           </p>
           <!-- 十二因缘 -->
           <p class="mr-1">
             {{ getYinyuan(用神_五行, 纳甲[index].slice(-2, -1)).slice(-1) }}
           </p>
           <!-- 旺衰 -->
-          <p class="mr-1">
+          <p v-show="isShowScore" class="mr-1">
             <span class="inline-block w-7">
               {{ getYueScore(纳甲[index].slice(-2, -1)) }}
             </span>
@@ -304,7 +314,7 @@ onMounted(() => {
         </div>
         <div flex>
           <!-- 符号 -->
-          <p w-2em text-xl color-gray-6>
+          <p w-1em text-xl color-gray-6 tracking--3>
             <span
               v-if="hasDongyao" inline-block :class="{
                 'color-black': yao % 3 === 0,
@@ -330,7 +340,7 @@ onMounted(() => {
       </div>
     </div>
     <!-- 卦名 -->
-    <div v-if="!hasCenter" flex-center translate-y-10px>
+    <div v-if="!hasCenter" flex-center translate-y-10px @click="isShowScore = !isShowScore">
       <p class="font-bold">
         {{ baguaziran[卦象.slice(3).join('')] }}{{ baguaziran[卦象.slice(0, 3).join('')] }}{{ 卦?.卦名 }}
       </p>
