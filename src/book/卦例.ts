@@ -4,11 +4,13 @@ import 六爻预测 from './六爻预测'
 import { getDatabase } from '@/utils/db'
 
 const database = getDatabase<Guali>('guali')
-const data = await database.get()
-const 自占 = data?.filter((i) => i.id.startsWith('自占_')) ?? []
-console.log('🚀 ~ 自占:', 自占)
 
-database.set([...增删卜易, ...淮源子, ...六爻预测, ...自占])
+database.get().then((data) => {
+  const 自占 = data?.filter((i) => i.id.startsWith('自占_')) ?? []
+  console.log('🚀 ~ 自占:', 自占)
+
+  database.set([...增删卜易, ...淮源子, ...六爻预测, ...自占])
+})
 
 export type Guali = typeof 增删卜易[number] & {
   收藏?: string
