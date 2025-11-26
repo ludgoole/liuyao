@@ -29,6 +29,7 @@ export default book.map((item, i) => {
     id: `六爻预测_${(`00${i}`).slice(-3)}`,
     书名: '六爻预测',
     现状: '',
+    之卦: '',
     ...item,
   }
 })

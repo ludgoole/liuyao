@@ -200,7 +200,18 @@ const onReady = (_世爻: string, index = 0) => {
 }
 
 const onSave = () => {
+  const getZhigua = (卦象: string) => {
+    const 主卦象 = 卦象.split('').map((v) => Number(v))
+    const 变卦象 = 主卦象.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
+    const 主卦_卦象 = 主卦象.map((v) => v % 2).toString()
+    const 变卦_卦象 = 变卦象.map((v) => v % 2).toString()
+    const 主卦 = yijing.find((卦) => 卦.卦象.toString() === 主卦_卦象)
+    const 变卦 = yijing.find((卦) => 卦.卦象.toString() === 变卦_卦象)
+
+    return `${主卦?.卦名}之${变卦?.卦名}`
+  }
   const fn = query.id ? gualiDb.update : gualiDb.add
+
   fn({
     id,
     书名: '自占自卜',
@@ -219,6 +230,7 @@ const onSave = () => {
     应期: 应期.value,
     细节: 细节.value,
     启示: 启示.value,
+    之卦: getZhigua(卦象.value),
   }).then(() => {
     Toast('保存成功')
   })

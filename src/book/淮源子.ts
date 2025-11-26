@@ -78,6 +78,7 @@ export default book.map((item, i) => {
   return {
     id: `淮源子_${(`00${i}`).slice(-3)}`,
     书名: '淮源子',
+    之卦: '',
     ...item,
   }
 })
