@@ -275,6 +275,8 @@ onMounted(() => {
                 'color-gray-4': dizhi[yuezhi].六冲 === 纳甲[index].slice(-2, -1),
                 // 月合 | 日和
                 'color-yellow': dizhi[yuezhi].六合 === 纳甲[index].slice(-2, -1) || dizhi[zhi].六合 === 纳甲[index].slice(-2, -1),
+                // 月建 | 日建
+                'color-indigo': yuezhi === 纳甲[index].slice(-2, -1) || zhi === 纳甲[index].slice(-2, -1),
               }"
             >{{ 纳甲[index].slice(-2, -1) }}</span>
             <span>
