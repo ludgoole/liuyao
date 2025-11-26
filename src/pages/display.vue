@@ -39,7 +39,7 @@ const 天干神煞 = ['贵人', '禄神', '羊刃', '文昌'] as TS[]
 const 地支神煞 = ['驿马', '桃花', '将星', '劫煞', '华盖', '谋星', '灾煞'] as DS[]
 
 // 卜卦
-const id = (query.id || Date.now().toString()) as string
+const id = (query.id || `自占_${Date.now().toString()}`) as string
 const 卦象 = ref((query.卦象 || '678987') as string)
 const 占问 = ref((query.占问 || '今日天气如何？') as string)
 const 占类 = (query.占类 || '天气') as string
@@ -200,7 +200,8 @@ const onReady = (_世爻: string, index = 0) => {
 }
 
 const onSave = () => {
-  gualiDb.add({
+  const fn = query.id ? gualiDb.update : gualiDb.add
+  fn({
     id,
     书名: '自占自卜',
     占问: 占问.value,
@@ -367,6 +368,7 @@ useMitt(onSave)
         />
         <VanField
           v-model="吉凶"
+          mt-2
           label="吉凶"
           rows="1"
           autosize

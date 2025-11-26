@@ -551,7 +551,7 @@ const book = [
 
 export default book.map((item, i) => {
   return {
-    id: `'增删卜易'_${(`00${i}`).slice(-3)}`,
+    id: `增删卜易_${(`00${i}`).slice(-3)}`,
     书名: '增删卜易',
     年建: '',
     时建: '',

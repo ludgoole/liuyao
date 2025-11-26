@@ -114,7 +114,7 @@ declare namespace DATABASE {
     'id': string;
     '占问': string;
     '占类': string;
-    '卦主': string;
+    '卦主'?: string;
     '年建'?: string;
     '月建': string;
     '日建': string;

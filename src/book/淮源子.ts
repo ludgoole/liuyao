@@ -76,7 +76,7 @@ const book = [
 
 export default book.map((item, i) => {
   return {
-    id: `'淮源子'_${(`00${i}`).slice(-3)}`,
+    id: `淮源子_${(`00${i}`).slice(-3)}`,
     书名: '淮源子',
     ...item,
   }

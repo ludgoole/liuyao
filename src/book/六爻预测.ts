@@ -26,8 +26,8 @@ const book = [
 
 export default book.map((item, i) => {
   return {
-    id: `'增删卜易'_${(`00${i}`).slice(-3)}`,
-    书名: '增删卜易',
+    id: `六爻预测_${(`00${i}`).slice(-3)}`,
+    书名: '六爻预测',
     现状: '',
     ...item,
   }

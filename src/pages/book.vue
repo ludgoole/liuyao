@@ -76,6 +76,18 @@ const starGua = (卦: Guali, i: number) => {
     onLoad()
   })
 }
+
+const editGua = (卦: Guali, i: number) => {
+  // 不加i，数据永远是第一条，即book[0]
+  console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
+
+  router.push({
+    path: '/query',
+    query: {
+      ...卦,
+    },
+  })
+}
 const delGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
   console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
@@ -136,6 +148,7 @@ onLoad()
           </template>
           <VanCell :title="卦.占问" :value="getZhigua(卦.卦象)" @click="toGua(卦, i)" />
           <template #right>
+            <VanButton square type="warning" text="编辑" @click="editGua(卦, i)" />
             <VanButton square type="danger" text="删除" @click="delGua(卦, i)" />
           </template>
         </VanSwipeCell>

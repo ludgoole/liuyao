@@ -259,7 +259,7 @@ onMounted(() => {
               // 忌神
               'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
-              'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
+              'border-base leading-4': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
               'w-15': size === 24,
               'w-19': size === 32,
             }"
@@ -273,6 +273,8 @@ onMounted(() => {
               v-else :class="{
                 // 月破
                 'color-gray-4': dizhi[yuezhi].六冲 === 纳甲[index].slice(-2, -1),
+                // 月合 | 日和
+                'color-yellow': dizhi[yuezhi].六合 === 纳甲[index].slice(-2, -1) || dizhi[zhi].六合 === 纳甲[index].slice(-2, -1),
               }"
             >{{ 纳甲[index].slice(-2, -1) }}</span>
             <span>
@@ -329,7 +331,7 @@ onMounted(() => {
             </span>
           </p>
           <!-- 世应 -->
-          <p v-if="hasShiying" w-1em translate-y-6px mr-2>
+          <p v-if="hasShiying" w-1em translate-y-5px mr-2>
             {{ 世应[`${index + 1}`] === '世' ? 卦?.八宫.slice(0, 1) : 世应[`${index + 1}`] }}
           </p>
           <!-- 六神 -->
