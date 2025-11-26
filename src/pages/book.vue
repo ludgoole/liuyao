@@ -30,8 +30,8 @@ const types = [
   // '吉凶',
   // '应期',
   '细节',
-  '启示',
-  '收藏',
+  // '启示',
+  // '收藏',
 ] as DATABASE.Guali_Key[]
 const book = ref<Guali[]>([])
 const typeName = ref<DATABASE.Guali_Key>('占问')
