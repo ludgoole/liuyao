@@ -268,9 +268,9 @@ onMounted(() => {
               {{ getLiuqin(wuxing, 纳甲[index].slice(-1)) }}
             </span>
             <!-- 旬空 -->
-            <span v-if="xunkong.includes(纳甲[index].slice(-2, -1))">({{ 纳甲[index].slice(-2, -1) }})</span>
+            <span v-if="xunkong.includes(纳甲[index].slice(-2, -1))">(</span>
             <span
-              v-else :class="{
+              :class="{
                 // 月破
                 'color-gray-4': dizhi[yuezhi].六冲 === 纳甲[index].slice(-2, -1),
                 // 月合 | 日和
@@ -279,6 +279,7 @@ onMounted(() => {
                 'color-indigo': yuezhi === 纳甲[index].slice(-2, -1) || zhi === 纳甲[index].slice(-2, -1),
               }"
             >{{ 纳甲[index].slice(-2, -1) }}</span>
+            <span v-if="xunkong.includes(纳甲[index].slice(-2, -1))">)</span>
             <span>
               {{ 纳甲[index].slice(-1) }}
             </span>

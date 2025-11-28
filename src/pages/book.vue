@@ -113,7 +113,7 @@ const toGua = (卦: Guali, i: number) => {
 
 // bus
 useMitt(() => {
-  downloadFile(book.value, 'guali.json')
+  downloadFile(book.value.filter((v) => v.id.startsWith('自占_')), 'guali.json')
 })
 
 // created
