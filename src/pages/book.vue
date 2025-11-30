@@ -34,9 +34,9 @@ const types = [
   // '启示',
   // '收藏',
 ] as DATABASE.Guali_Key[]
+const searchs = ref([])
 const book = ref<Guali[]>([])
-const typeName = ref<DATABASE.Guali_Key>('占问')
-const search = ref('')
+const active = ref(0)
 
 // computed
 const getZhigua = (卦象: string) => {
@@ -60,8 +60,9 @@ const onLoad = async () => {
 }
 
 const queryGua = () => {
-  console.log('🚀 ~ file: book.vue:59 ~ queryGua ~ queryGua:', typeName.value, search.value)
-  gualiDb.query(typeName.value, search.value).then((data) => {
+  const params = searchs.value.map((v, i) => ({ prop: types[i], value: v })).filter((v) => v.value)
+  console.log('🚀 ~ queryGua ~ params:', params)
+  gualiDb.query(params).then((data) => {
     if (data)
       book.value = data
   })
@@ -125,15 +126,15 @@ onLoad()
     <VanSticky :offset-top="0">
       <div bg-white py-2 px-4 whitespace-nowrap overflow-x-auto space-x-2>
         <VanTag
-          v-for="type in types" :key="type" :type="typeName === type ? 'primary' : 'default'" size="large"
-          @click="() => typeName = type"
+          v-for="(type, i) in types" :key="type" :type="i === active ? 'primary' : 'default'" size="large"
+          @click="() => active = i"
         >
           {{ type }}
         </VanTag>
       </div>
 
       <VanField
-        v-model="search" label="" placeholder="请输入" right-icon="search" @click-right-icon="queryGua"
+        v-model="searchs[active]" label="" placeholder="请输入" right-icon="search" @click-right-icon="queryGua"
         @keydown.enter.prevent="queryGua"
       />
     </VanSticky>

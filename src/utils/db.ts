@@ -65,11 +65,11 @@ export async function remove<T extends Identifiable>(key: string, id: string) {
   return data
 }
 
-export async function query<T>(key: string, prop: string, value: Type) {
+export async function query<T>(key: string, params: { prop: string; value: Type }[]) {
   const data = await database.getItem<T[]>(key)
 
   if (data)
-    return data.filter((i) => String(i[prop as keyof T]).includes(value.toString()))
+    return data.filter((i) => params.every((p) => String(i[p.prop as keyof T]).includes(p.value.toString())))
 
   return data
 }
@@ -82,6 +82,6 @@ export function getDatabase<T extends Identifiable>(key: string) {
     bulkAdd: (items: T[]) => bulkAdd<T>(key, items),
     update: (item: T) => update<T>(key, item),
     remove: (id: string) => remove<T>(key, id),
-    query: (prop: string, value: Type) => query<T>(key, prop, value),
+    query: (params: { prop: string; value: Type }[]) => query<T>(key, params),
   }
 }
