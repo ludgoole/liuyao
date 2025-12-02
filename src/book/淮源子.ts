@@ -80,8 +80,5 @@ export default book.map((item, i) => {
     ...item,
     id: `淮源子_${(`00${i}`).slice(-3)}`,
     书名: '淮源子',
-    卦主: item.卦主 || '',
-    年建: item.年建 || '',
-    时建: item.时建 || '',
   }
 })

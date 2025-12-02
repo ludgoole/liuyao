@@ -37,13 +37,90 @@ const 卦象中文 = {
 } as { [key: string]: string }
 const 天干神煞 = ['贵人', '禄神', '羊刃', '文昌'] as TS[]
 const 地支神煞 = ['驿马', '桃花', '将星', '劫煞', '华盖', '谋星', '灾煞'] as DS[]
+const getXunkong = (rigan: string): string => {
+  const gan = rigan[0] // 获取天干的第一个字符
+  const zhi = rigan.slice(1) // 获取地支部分
+
+  // 天干对应表（1-10）
+  const ganMap: Record<string, number> = {
+    甲: 1,
+    乙: 2,
+    丙: 3,
+    丁: 4,
+    戊: 5,
+    己: 6,
+    庚: 7,
+    辛: 8,
+    壬: 9,
+    癸: 10,
+  }
+
+  // 地支对应表（1-12）
+  const zhiMap: Record<string, number> = {
+    子: 1,
+    丑: 2,
+    寅: 3,
+    卯: 4,
+    辰: 5,
+    巳: 6,
+    午: 7,
+    未: 8,
+    申: 9,
+    酉: 10,
+    戌: 11,
+    亥: 12,
+  }
+
+  // 地支名称数组（按顺序）
+  const zhiArray = ['', '子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥']
+
+  // 获取当前天干和地支的序号
+  const ganIndex = ganMap[gan]
+  const zhiIndex = zhiMap[zhi]
+
+  // 计算从当前天干到癸还需要多少步
+  // 例如：甲(1)到癸(10)需要9步，乙(2)到癸(10)需要8步...
+  const stepsToGui = 10 - ganIndex
+
+  // 计算癸对应的地支位置
+  // 当前地支位置 + 步数，然后对12取模
+  let guiZhiIndex = (zhiIndex + stepsToGui) % 12
+  if (guiZhiIndex === 0) guiZhiIndex = 12 // 处理模运算结果为0的情况
+
+  // 从癸的地支位置往后数两个地支就是旬空
+  let xunkongStartIndex = (guiZhiIndex + 1) % 12
+  if (xunkongStartIndex === 0) xunkongStartIndex = 12
+
+  let xunkongEndIndex = (guiZhiIndex + 2) % 12
+  if (xunkongEndIndex === 0) xunkongEndIndex = 12
+
+  // 返回旬空值
+  return zhiArray[xunkongStartIndex] + zhiArray[xunkongEndIndex]
+}
+
+const getGuaXiang = (之卦: string) => {
+  const [主卦_卦名, 变卦_卦名] = 之卦.split('之')
+  if (!变卦_卦名 || !zhouyi) return
+
+  const 主卦_卦象 = zhouyi.yijing.find((卦) => 卦.卦名 === 主卦_卦名)
+  const 变卦_卦象 = zhouyi.yijing.find((卦) => 卦.卦名 === 变卦_卦名)
+
+  // 遍历主卦卦象，如果主卦爻与对应的变卦爻一致，则为静爻，爻数为0返回8，为1返回7；否则为动爻，分别返回6和9
+  const 卦象_爻数 = 主卦_卦象?.卦象.map((v, i) => {
+    if (v === 变卦_卦象?.卦象[i])
+      return v === 1 ? 7 : 8
+    else
+      return v === 1 ? 9 : 6
+  })
+
+  return 卦象_爻数?.join('') ?? ''
+}
 
 // 卜卦
 const id = (query.id || `自占_${Date.now().toString()}`) as string
-const 卦象 = ref((query.卦象 || '678987') as string)
+const 卦象 = ref(query.卦象 as string || getGuaXiang(query.之卦 as string) || '678987')
 const 占问 = ref((query.占问 || '今日天气如何？') as string)
 const 占类 = (query.占类 || '天气') as string
-const 卦主 = (query.卦主 || '自己') as string
 const 卦 = computed(() => yijing.find((v) => v.卦象.toString() === 卦象.value.split('').map((v) => Number(v) % 2).toString()) || yijing[0])
 
 // 装卦
@@ -53,7 +130,7 @@ const 年建 = query.年建 || lunar.getYearZhi()
 const 月建 = query.月建 || lunar.getMonthZhi()
 const 日建 = (`甲${query.日建 || lunar.getDayInGanZhi()}`).slice(-2)
 const 时建 = query.时建 || lunar.getTimeInGanZhi()
-const 旬空 = query.旬空 || lunar.getDayXunKong()
+const 旬空 = query.旬空 as string || getXunkong(日建)
 const 月支 = 月建.slice(-1) as DATABASE.Dizhi_Key
 const 日支 = 日建.slice(-1) as DATABASE.Dizhi_Key
 const 日干 = 日建.slice(0, 1) as DATABASE.Tiangan_Key
@@ -82,6 +159,7 @@ const 三刑 = ref('')
 const 世爻 = ref('')
 const 用神 = ref(query.用神 as string || '')
 console.log('🚀 ~ 用神:', 用神)
+const 原注 = ref(query.原注 as string || '')
 const 现状 = ref(query.现状 as string || '')
 const 吉凶 = ref(query.吉凶 as string || '')
 const 应期 = ref(query.应期 as string || '')
@@ -217,20 +295,20 @@ const onSave = () => {
     书名: '自占自卜',
     占问: 占问.value,
     占类,
-    卦主,
     卦象: 卦象.value,
+    之卦: getZhigua(卦象.value),
     年建,
     月建,
     日建,
     时建,
     旬空,
     用神: 用神.value,
+    原注: 原注.value,
     现状: 现状.value,
     吉凶: 吉凶.value,
     应期: 应期.value,
     细节: 细节.value,
     启示: 启示.value,
-    之卦: getZhigua(卦象.value),
   }).then(() => {
     Toast('保存成功')
   })
@@ -369,6 +447,9 @@ useMitt(onSave)
             <p>世：{{ 生克冲合('世') }}</p>
           </div>
         </section>
+      </VanCollapseItem>
+      <VanCollapseItem title="原注" name="原注" :border="false">
+        <p>{{ 原注 }}</p>
       </VanCollapseItem>
       <VanCollapseItem title="批注" name="批注" :border="false">
         <VanField

@@ -7,48 +7,33 @@ meta:
 
 <script lang="ts" setup>
 import { Toast } from 'vant'
-import { useZhouyiStore } from '@/stores/zhouyi'
 import gualiDb, { type Guali } from '@/book/卦例'
 
 import { downloadFile } from '@/utils'
 import useMitt from '@/todos/use-mitt'
-const { zhouyi } = useZhouyiStore()
 const router = useRouter()
 
 // data
-const { yijing } = zhouyi as DATABASE.Zhouyi
 const types = [
   '书名',
   '占问',
   '占类',
   // '卦主',
-  '卦象',
+  // '卦象',
   '之卦',
   // '月建',
   // '日辰',
   // '旬空',
-  '用神',
+  // '用神',
   // '吉凶',
   // '应期',
-  // '细节',
-  // '启示',
+  '细节',
+  '启示',
   // '收藏',
 ] as DATABASE.Guali_Key[]
 const searchs = ref([])
 const book = ref<Guali[]>([])
 const active = ref(0)
-
-// computed
-const getZhigua = (卦象: string) => {
-  const 主卦象 = 卦象.split('').map((v) => Number(v))
-  const 变卦象 = 主卦象.map((v) => v === 6 ? 9 : v === 9 ? 6 : v)
-  const 主卦_卦象 = 主卦象.map((v) => v % 2).toString()
-  const 变卦_卦象 = 变卦象.map((v) => v % 2).toString()
-  const 主卦 = yijing.find((卦) => 卦.卦象.toString() === 主卦_卦象)
-  const 变卦 = yijing.find((卦) => 卦.卦象.toString() === 变卦_卦象)
-
-  return `${主卦?.卦名}之${变卦?.卦名}`
-}
 
 // method
 const onLoad = async () => {
@@ -70,7 +55,7 @@ const queryGua = () => {
 
 const starGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
-  console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
+  console.log('🚀 ~ file: book.vue:56 ~ starGua ~ i:', i)
 
   const { 收藏 } = 卦
   gualiDb.update({ ...卦, 收藏: 收藏 === '1' ? '0' : '1' }).then(() => {
@@ -81,7 +66,7 @@ const starGua = (卦: Guali, i: number) => {
 
 const editGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
-  console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
+  console.log('🚀 ~ file: book.vue:56 ~ editGua ~ i:', i)
 
   router.push({
     path: '/query',
@@ -92,7 +77,7 @@ const editGua = (卦: Guali, i: number) => {
 }
 const delGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
-  console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
+  console.log('🚀 ~ file: book.vue:56 ~ delGua ~ i:', i)
 
   gualiDb.remove(卦.id).then(() => {
     Toast('删除成功')
@@ -102,7 +87,7 @@ const delGua = (卦: Guali, i: number) => {
 
 const toGua = (卦: Guali, i: number) => {
   // 不加i，数据永远是第一条，即book[0]
-  console.log('🚀 ~ file: book.vue:56 ~ getZhigua ~ i:', i)
+  console.log('🚀 ~ file: book.vue:56 ~ toGua ~ i:', i)
 
   router.push({
     path: '/display',
@@ -148,7 +133,7 @@ onLoad()
               @click="starGua(卦, i)"
             />
           </template>
-          <VanCell :title="卦.占问" :value="getZhigua(卦.卦象)" @click="toGua(卦, i)" />
+          <VanCell :title="卦.占问" :value="卦.之卦" @click="toGua(卦, i)" />
           <template #right>
             <VanButton square type="warning" text="编辑" @click="editGua(卦, i)" />
             <VanButton square type="danger" text="删除" @click="delGua(卦, i)" />

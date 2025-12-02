@@ -259,8 +259,8 @@ onMounted(() => {
               // 忌神
               'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
-              'border-base leading-4': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
-              'w-15': size === 24,
+              'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
+              'w-15 leading-4': size === 24,
               'w-19': size === 32,
             }"
           >
@@ -334,11 +334,21 @@ onMounted(() => {
             </span>
           </p>
           <!-- 世应 -->
-          <p v-if="hasShiying" w-1em translate-y-5px mr-2>
+          <p
+            v-if="hasShiying" w-1em mr-2 :class="{
+              'translate-y-5px': size === 24,
+              'translate-y-3px': size === 32,
+            }"
+          >
             {{ 世应[`${index + 1}`] === '世' ? 卦?.八宫.slice(0, 1) : 世应[`${index + 1}`] }}
           </p>
           <!-- 六神 -->
-          <p v-if="hasLiushen" translate-y-6px>
+          <p
+            v-if="hasLiushen" :class="{
+              'translate-y-6px': size === 24,
+              'translate-y-3px': size === 32,
+            }"
+          >
             {{ 六神[index] }}
           </p>
         </div>

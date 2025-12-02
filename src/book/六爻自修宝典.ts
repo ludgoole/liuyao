@@ -88,8 +88,5 @@ export default book.map((item, i) => {
     ...item,
     id: `六爻自修宝典_${(`00${i}`).slice(-3)}`,
     书名: '六爻自修宝典',
-    卦主: item.卦主 || '',
-    年建: item.年建 || '',
-    时建: item.时建 || '',
   }
 })
