@@ -145,3 +145,15 @@ onLoad()
     <VanEmpty v-if="book.length === 0" description="暂无数据" />
   </div>
 </template>
+
+<style lang="less">
+.Book {
+  .van-cell {
+    justify-content: space-between;
+    &__value {
+      flex: none;
+      margin-left: 16px;
+    }
+  }
+}
+</style>
