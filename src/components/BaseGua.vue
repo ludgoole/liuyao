@@ -356,7 +356,10 @@ onMounted(() => {
     </div>
     <!-- 卦名 -->
     <div v-if="!hasCenter" flex-center translate-y-10px @click="isShowScore = !isShowScore">
-      <p class="font-bold">
+      <p v-if="baguaziran[卦象.slice(3).join('')] === baguaziran[卦象.slice(0, 3).join('')]" class="font-bold">
+        {{ 卦?.卦名 }}为{{ baguaziran[卦象.slice(3).join('')] }}
+      </p>
+      <p v-else class="font-bold">
         {{ baguaziran[卦象.slice(3).join('')] }}{{ baguaziran[卦象.slice(0, 3).join('')] }}{{ 卦?.卦名 }}
       </p>
       <p>({{ 卦?.八宫.slice(0, 2) }}{{ 卦?.归游 }})</p>

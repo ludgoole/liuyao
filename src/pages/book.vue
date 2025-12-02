@@ -148,11 +148,13 @@ onLoad()
 
 <style lang="less">
 .Book {
-  .van-cell {
-    justify-content: space-between;
-    &__value {
-      flex: none;
-      margin-left: 16px;
+  ul {
+    .van-cell {
+      justify-content: space-between;
+      &__value {
+        flex: none;
+        margin-left: 16px;
+      }
     }
   }
 }

@@ -99,8 +99,16 @@ const getXunkong = (rigan: string): string => {
 }
 
 const getGuaXiang = (之卦: string) => {
-  const [主卦_卦名, 变卦_卦名] = 之卦.split('之')
-  if (!变卦_卦名 || !zhouyi) return
+  if (!zhouyi) return
+
+  let [主卦_卦名, 变卦_卦名] = 之卦.split('之')
+
+  if (!变卦_卦名) {
+    // 坤为地
+    主卦_卦名 = 之卦.slice(0, 1)
+    变卦_卦名 = 主卦_卦名
+    console.log('🚀 ~ getGuaXiang ~ 变卦_卦名:', 变卦_卦名)
+  }
 
   const 主卦_卦象 = zhouyi.yijing.find((卦) => 卦.卦名 === 主卦_卦名)
   const 变卦_卦象 = zhouyi.yijing.find((卦) => 卦.卦名 === 变卦_卦名)
@@ -113,6 +121,7 @@ const getGuaXiang = (之卦: string) => {
       return v === 1 ? 9 : 6
   })
 
+  console.log('🚀 ~ getGuaXiang ~ 卦象_爻数:', 卦象_爻数)
   return 卦象_爻数?.join('') ?? ''
 }
 
@@ -449,7 +458,9 @@ useMitt(onSave)
         </section>
       </VanCollapseItem>
       <VanCollapseItem title="原注" name="原注" :border="false">
-        <p>{{ 原注 }}</p>
+        <p text-justify>
+          {{ 原注 }}
+        </p>
       </VanCollapseItem>
       <VanCollapseItem title="批注" name="批注" :border="false">
         <VanField
