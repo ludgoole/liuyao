@@ -3,6 +3,7 @@ meta:
   title: 卦例
   leftArrow: true
   rightText: 下载
+  keepAlive: true
 </route>
 
 <script lang="ts" setup>

@@ -54,6 +54,7 @@ const { zhouyi } = useZhouyiStore()
 const { yijing, tiangan, dizhi, wuxing, yinyuan, baguaziran } = zhouyi as DATABASE.Zhouyi
 const 爻位 = ref(0)
 const isShowScore = ref(false)
+const visibility = ref('hidden')
 
 // computed
 const 卦象 = computed(() => props.guaxiang.map((v) => v % 2))
@@ -214,6 +215,14 @@ const width = computed(() => `${props.size}vw`)
 const height = computed(() => `${props.size / 6}vw`)
 const fontSize = computed(() => `${props.size / 2}px`)
 
+// methods
+const onGuaMingClick = () => {
+  if (props.hasDongyao)
+    isShowScore.value = !isShowScore.value
+  else
+    visibility.value = visibility.value === 'hidden' ? 'visible' : 'hidden'
+}
+
 // mounted
 onMounted(() => {
   if (props.yongshen) {
@@ -232,7 +241,15 @@ onMounted(() => {
 <template>
   <div class="BaseGua flex flex-col-reverse">
     <!-- 爻象 -->
-    <div v-for="(yao, index) in guaxiang" :key="index" class="item flex items-center" @click="爻位 = index; emit('on-change', 纳甲[index], index)">
+    <div
+      v-for="(yao, index) in guaxiang" :key="index"
+      class="item flex items-center"
+      :class="{
+        // 只显示动爻的变爻
+        invisible: !hasDongyao && yao % 3 !== 0,
+      }"
+      @click="爻位 = index; emit('on-change', 纳甲[index], index)"
+    >
       <!-- 爻象左侧 -->
       <div v-if="hasNajia" class="BaseGua-left">
         <div v-if="index === 5">
@@ -255,13 +272,13 @@ onMounted(() => {
               // 用神
               'font-bold': 用神 === 纳甲[index],
               // 元神
-              'color-green font-bold': wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
+              'color-green font-bold': (yao % 3 === 0 || dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1)) && wuxing[用神_五行]?.元神 === 纳甲[index].slice(-1),
               // 忌神
-              'color-red font-bold': wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
+              'color-red font-bold': (yao % 3 === 0 || dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1)) && wuxing[用神_五行]?.忌神 === 纳甲[index].slice(-1),
               // 暗动，旺相或旬空之爻逢日冲
-              'border-base': dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
+              'border-base': hasDongyao && dizhi[zhi].六冲 === 纳甲[index].slice(-2, -1),
               'w-15 leading-4': size === 24,
-              'w-19': size === 32,
+              'w-19.5': size === 32,
             }"
           >
             <span>
@@ -355,7 +372,7 @@ onMounted(() => {
       </div>
     </div>
     <!-- 卦名 -->
-    <div v-if="!hasCenter" flex-center translate-y-10px @click="isShowScore = !isShowScore">
+    <div v-if="!hasCenter" flex-center translate-y-10px @click="onGuaMingClick">
       <p v-if="baguaziran[卦象.slice(3).join('')] === baguaziran[卦象.slice(0, 3).join('')]" class="font-bold">
         {{ 卦?.卦名 }}为{{ baguaziran[卦象.slice(3).join('')] }}
       </p>
@@ -383,6 +400,9 @@ onMounted(() => {
     &.yang {
       background: darkred;
     }
+  }
+  .invisible {
+    visibility: v-bind(visibility);
   }
 }
 </style>

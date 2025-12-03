@@ -3,7 +3,6 @@ meta:
   title: 排盘
   leftArrow: true
   rightText: 保存
-  keepAlive: true
 </route>
 
 <script lang="ts" setup>
@@ -104,8 +103,8 @@ const getGuaXiang = (之卦: string) => {
   let [主卦_卦名, 变卦_卦名] = 之卦.split('之')
 
   if (!变卦_卦名) {
-    // 坤为地
-    主卦_卦名 = 之卦.slice(0, 1)
+    // 坤为地 天山遁
+    主卦_卦名 = 之卦.includes('为') ? 之卦.slice(0, 1) : 之卦.slice(2)
     变卦_卦名 = 主卦_卦名
     console.log('🚀 ~ getGuaXiang ~ 变卦_卦名:', 变卦_卦名)
   }
